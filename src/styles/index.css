@@ -1,0 +1,158 @@
+@import 'tailwindcss';
+
+/*
+  Dark mode is class-driven, not media-driven, because there is a manual toggle.
+  index.html sets `.dark` before first paint from localStorage + prefers-color-scheme.
+*/
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* ---- palette: light (primary) ---- */
+  --color-canvas: #fdf9f3;
+  --color-canvas-sunk: #f7f1e8;
+  --color-card: #ffffff;
+  --color-ink: #1f1b24;
+  --color-muted: #6b6472;
+  --color-line: #ede6dc;
+
+  --color-lilac: #a78bfa;
+  --color-lilac-soft: #ede9fe;
+  --color-peach: #fdba8c;
+  --color-peach-soft: #fff0e4;
+  --color-mint: #7fd1b9;
+
+  /* ---- type ---- */
+  --font-display: 'Bricolage Grotesque', 'Plus Jakarta Sans', ui-sans-serif, system-ui,
+    sans-serif;
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* ---- shape ---- */
+  --radius-bento: 24px;
+  --radius-tile: 18px;
+
+  --shadow-bento: 0 1px 2px rgb(31 27 36 / 0.04), 0 8px 24px -8px rgb(31 27 36 / 0.1);
+  --shadow-bento-lift: 0 2px 4px rgb(31 27 36 / 0.05), 0 18px 40px -12px rgb(31 27 36 / 0.16);
+
+  /* ---- motion ---- */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/*
+  Dark palette. Redefined as real values rather than an inversion — a cream
+  design flipped mechanically reads muddy.
+*/
+.dark {
+  --color-canvas: #17141b;
+  --color-canvas-sunk: #120f16;
+  --color-card: #211d28;
+  --color-ink: #f5f1ec;
+  --color-muted: #a79fb0;
+  --color-line: #322c3b;
+
+  --color-lilac: #b9a2ff;
+  --color-lilac-soft: #2b2340;
+  --color-peach: #ffc9a3;
+  --color-peach-soft: #3a2a20;
+  --color-mint: #8fdcc5;
+
+  --shadow-bento: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
+  --shadow-bento-lift: 0 2px 4px rgb(0 0 0 / 0.35), 0 18px 40px -12px rgb(0 0 0 / 0.6);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Lenis drives scrolling; native smooth-scroll on top of it double-animates. */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  html.lenis {
+    scroll-behavior: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-lilac);
+    color: #ffffff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-lilac);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  /* The bento tile. Every card on the site is one of these. */
+  .tile {
+    background-color: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-bento);
+    box-shadow: var(--shadow-bento);
+  }
+
+  .tile-hover {
+    transition:
+      box-shadow 0.35s var(--ease-out-soft),
+      transform 0.35s var(--ease-out-soft),
+      border-color 0.35s var(--ease-out-soft);
+  }
+  .tile-hover:hover {
+    box-shadow: var(--shadow-bento-lift);
+    transform: translateY(-3px);
+    border-color: color-mix(in oklab, var(--color-lilac) 40%, var(--color-line));
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  /* Soft lilac→peach wash used behind hero and accent tiles. */
+  .gradient-wash {
+    background-image: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--color-lilac) 85%, white) 0%,
+      color-mix(in oklab, var(--color-peach) 85%, white) 100%
+    );
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

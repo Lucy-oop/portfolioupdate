@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+
+    <title>Yee Mon Thant (Lucy) — Junior Frontend Developer</title>
+    <meta
+      name="description"
+      content="Junior frontend developer in Bangkok. React, TypeScript and Tailwind CSS, with UI/UX design case studies. 9 shipped builds, 6 design projects."
+    />
+    <meta name="author" content="Yee Mon Thant" />
+    <meta name="theme-color" content="#FDF9F3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#17141B" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Yee Mon Thant (Lucy) — Junior Frontend Developer" />
+    <meta
+      property="og:description"
+      content="React, TypeScript and Tailwind CSS, with UI/UX design case studies. Based in Bangkok."
+    />
+    <meta property="og:image" content="/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--
+      Set the theme class before first paint so a dark-mode visitor never sees a
+      cream flash. Mirrors the logic in components/layout/ThemeToggle.tsx.
+    -->
+    <script>
+      ;(function () {
+        try {
+          var stored = localStorage.getItem('theme')
+          var dark =
+            stored === 'dark' ||
+            (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          if (dark) document.documentElement.classList.add('dark')
+        } catch (e) {}
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
