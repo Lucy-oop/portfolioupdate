@@ -1,3 +1,4 @@
+import quickbook from '../assets/work/quickbook.png'
 import taskflow from '../assets/work/taskflow.webp'
 import logvault from '../assets/work/logvault.jpg'
 import lucyAi from '../assets/work/lucyAi.png'
@@ -22,6 +23,18 @@ export type Project = {
 }
 
 export const projects: Project[] = [
+  {
+    slug: 'quickbook',
+    title: 'Quickbook',
+    year: '2026',
+    role: 'Full-stack + database design',
+    blurb:
+      'A multi-tenant ERP, POS and accounting system for Myanmar businesses — tenant isolation enforced in Postgres row-level security, six roles, per-tenant custom fields and MMK/THB/USD reporting, all bilingual.',
+    stack: ['Next.js 15', 'TypeScript', 'Supabase', 'PostgreSQL RLS'],
+    href: 'https://quickbook-one.vercel.app/',
+    img: quickbook,
+    featured: true,
+  },
   {
     slug: 'log-vault',
     title: 'Log Vault',
@@ -56,7 +69,6 @@ export const projects: Project[] = [
     stack: ['React', 'Framer Motion', 'Recharts', 'Vite'],
     href: 'https://lucy-oop.github.io/nexus-saas/',
     img: nexus,
-    featured: true,
   },
   {
     slug: 'taskflow-dashboard',

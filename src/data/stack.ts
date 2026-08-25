@@ -38,7 +38,7 @@ export const stackGroups: StackGroup[] = [
     label: 'Backend & Data',
     icon: Server,
     tone: 'mint',
-    items: ['Node.js', 'Express.js', 'Python', 'Firebase', 'PostgreSQL', 'Nodemon'],
+    items: ['Node.js', 'Express.js', 'Python', 'Firebase', 'PostgreSQL', 'Supabase', 'Nodemon'],
   },
   {
     id: 'devtools',
