@@ -1,3 +1,4 @@
+import mingalar from '../assets/work/mingalardelivery.png'
 import quickbook from '../assets/work/quickbook.png'
 import taskflow from '../assets/work/taskflow.webp'
 import logvault from '../assets/work/logvault.jpg'
@@ -23,6 +24,18 @@ export type Project = {
 }
 
 export const projects: Project[] = [
+  {
+    slug: 'mingalar-express',
+    title: 'Mingalar Express',
+    year: '2026',
+    role: 'Full-stack + geospatial dispatch',
+    blurb:
+      'A hyper-local delivery and cash-on-delivery platform for Thingangyun Township, Yangon — row-locked route dispatch, an offline-first rider PWA that queues every state change before it sends, and an append-only COD ledger settled in integer MMK. Bilingual throughout.',
+    stack: ['Next.js 16', 'Supabase', 'PostGIS', 'Leaflet'],
+    href: 'https://mingalar-express.vercel.app',
+    img: mingalar,
+    featured: true,
+  },
   {
     slug: 'quickbook',
     title: 'Quickbook',
@@ -57,7 +70,6 @@ export const projects: Project[] = [
     stack: ['React', 'TypeScript', 'Gemini API', 'Tailwind CSS'],
     href: 'https://ai-portfolio-chatbot-cyan.vercel.app',
     img: lucyAi,
-    featured: true,
   },
   {
     slug: 'nexus-saas',
