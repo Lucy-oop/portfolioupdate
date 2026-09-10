@@ -111,14 +111,16 @@ function build(
 
 
 /**
- * Embeds are OFF.
+ * Embeds are ON.
  *
- * All three Figma files and the Google Stitch project are currently private —
- * a signed-out visitor gets a permission wall, not the design. Until link
- * sharing is turned on, the screenshots do the work. Flip this to `true` to
- * bring back the live Figma iframes and the Stitch button.
+ * Every `figmaEmbed` below renders a live, pannable iframe plus an "Open in
+ * Figma" link. This works off each FILE's own link sharing — set Share ->
+ * "Anyone with the link" -> "can view" on each one, or a signed-out visitor
+ * gets a permission wall instead of the design.
+ *
+ * Flip this to `false` to fall back to the screenshots alone.
  */
-const SHOW_EMBEDS = false
+const SHOW_EMBEDS = true
 
 const embed = (url: string) => (SHOW_EMBEDS ? url : undefined)
 
@@ -134,6 +136,9 @@ export const caseStudies: CaseStudy[] = [
       tools: ['Figma', 'Design system', 'Responsive design'],
       summary:
         'A Trang Province artisan collective weaving sun-dried pandanus into bags, baskets and home objects. I designed a five-page storefront where the craft — and the people making it — carry the page.',
+      figmaEmbed: embed(
+        'https://www.figma.com/design/yu9PBVH12fAyblWP4CucTe/Client-Web-Projects-2026?node-id=0-1'
+      ),
       draft: false,
     },
     {
@@ -193,80 +198,169 @@ export const caseStudies: CaseStudy[] = [
     role: 'UI/UX design',
     tools: ['Figma'],
     summary:
-      'An artisanal Thai bag brand working in upcycled genuine leather and hand embroidery. Editorial home page with a bilingual EN/TH shell, built to sit in front of an existing Facebook order flow.',
+      'A responsive e-commerce web design for a modern sustainable brand. Focused on high-converting product pages, clean navigation, and compelling brand storytelling to position upcycled fashion as modern luxury.',
     figmaEmbed: embed(
-      'https://www.figma.com/design/Rye2uGadaoPcQqHeqR1QM1/Untitled?node-id=0-1'
+      'https://www.figma.com/design/xi8MxJzV5APGDxR52x2kKc/Untitled?node-id=0-1'
     ),
-    draft: true,
+    draft: false,
   }),
 
-  build('restyle', {
-    title: 'ReStyle',
-    subtitle: 'Modern tailoring, sold like an editorial',
+  build('amara', {
+    title: 'Amara',
+    subtitle: 'Handwoven bags from recycled plastic, sold as modern luxury',
     year: '2026',
     discipline: 'Brand · E-commerce web UI',
     role: 'UI/UX design',
     tools: ['Figma'],
     summary:
-      'A city-inspired clothing label. Monochrome editorial storefront with a behind-the-scenes video panel and the trust row — shipping, quality, support, checkout — pulled up to the fold.',
+      'Amara is a luxury e-commerce platform showcasing handcrafted bags made from recycled plastic. Featuring a bilingual (EN/TH) layout and a direct Facebook order flow instead of a traditional cart, the design bridges sustainability and modern elegance.',
     figmaEmbed: embed(
-      'https://www.figma.com/design/lO95TnM0xsXyoWGT7g0oAy/Untitled?node-id=0-1'
+      'https://www.figma.com/design/xi8MxJzV5APGDxR52x2kKc/Untitled?node-id=0-1'
     ),
-    draft: true,
+    draft: false,
   }),
 
-  build('wan-mai', {
-    title: 'Wan Mai',
-    subtitle: 'A social enterprise marketplace across Myanmar and Thailand',
-    year: '2026',
-    discipline: 'Social enterprise · Marketplace UI',
-    role: 'UI/UX design',
-    tools: ['Figma'],
-    summary:
-      'Nurturing women-led small businesses through a community-driven marketplace. The design leads with the artisans rather than the products — Shop, Meet Our Artisans, Impact and Workshops all sit at the top level.',
-    figmaEmbed: embed(
-      'https://www.figma.com/design/fFxsFlGOdr89Zpm7Gr6twk/Untitled?node-id=3-701'
-    ),
-    draft: true,
-  }),
+  build(
+    'restyle',
+    {
+      title: 'ReStyle',
+      subtitle: 'Modern tailoring, sold like an editorial',
+      year: '2026',
+      discipline: 'Brand · E-commerce web UI',
+      role: 'UI/UX design — five final pages',
+      tools: ['Figma'],
+      summary:
+        'A city-inspired menswear label selling meticulously restored garments as contemporary tailoring. Five pages of monochrome editorial, with a behind-the-seams video panel and the trust row — shipping, quality, support, checkout — pulled up to the fold.',
+      figmaEmbed: embed(
+        'https://www.figma.com/design/lO95TnM0xsXyoWGT7g0oAy/Untitled?node-id=0-1'
+      ),
+      draft: false,
+    },
+    {
+      final: {
+        title: 'Five pages, full length',
+        body: [
+          'Each page below is the full-length export, scrollable in place. Home opens on a single editorial hero — "Define your style." — with the Behind the Seams video panel beside it, then drops into the trust row and the product categories before any pricing appears.',
+          'Collections is the catalogue: five filter chips across Tailored Outerwear, Oversized Shirts, Wide Trousers and Knitwear, with Sold Out, New and Restocked badges carried on the card itself so availability is legible without a click. Product Detail pairs the gallery with the buy panel — colour, size and size guide, Add to Bag, Add to Wishlist — and holds the Product Philosophy and Atelier Care copy in accordions underneath, so provenance is available without pushing the price below the fold.',
+          'About Us does the persuading: the founding story, the numbers, customer testimonials, and a Book a Consultation close. Contact Us answers the logistics — atelier address on an embedded map, direct email, concierge line, the enquiry form, and a four-column FAQ for everything the form would otherwise absorb.',
+        ],
+      },
+    }
+  ),
 
-  build('smart-menu', {
-    title: 'Smart Shop',
-    subtitle: 'A QR menu builder for restaurants, in Burmese and English',
-    year: '2026',
-    discipline: 'Product UI · SaaS',
-    role: 'UI/UX design',
-    tools: ['Figma', 'Stitch'],
-    summary:
-      'A menu-maker product for Myanmar restaurants: pick a template, build the menu, print the QR. Bilingual by default rather than as an afterthought, with auto QR sync so a printed code never goes stale.',
-    draft: true,
-  }),
+  build(
+    'wan-mai',
+    {
+      title: 'Wan Mai',
+      subtitle: 'A social enterprise marketplace across Myanmar and Thailand',
+      year: '2026',
+      discipline: 'Social enterprise · Marketplace UI',
+      role: 'UI/UX design — four final pages',
+      tools: ['Figma'],
+      summary:
+        'Nurturing women-led small businesses through a community-driven marketplace. The design leads with the artisans rather than the products — Shop, Meet Our Artisans, Impact and Workshops all sit at the top level.',
+      figmaEmbed: embed(
+        'https://www.figma.com/design/fFxsFlGOdr89Zpm7Gr6twk/Untitled?node-id=0-1'
+      ),
+      draft: false,
+    },
+    {
+      final: {
+        title: 'Four pages, full length',
+        body: [
+          'Each page below is the full-length export, scrollable in place. Home opens on "Empowering dreams. Bridging borders." and then puts the makers before the merchandise — a collective-partners collage, the curated product row, and a full artisan feature on Ju Ju before the page asks for anything. Every product card carries a "by <maker>" line under the title, so attribution rides along with the price rather than living on a separate page.',
+          'Shop is the catalogue: category tiles across accessories, bags, crochet, décor, eco-print, self-care, fabric and stationery, then seven filter chips, a product count and a price sort. Meet Our Artisans is the same catalogue logic applied to people — partner cards tagged Heritage, Eco-Action or Empowerment, each with a Read Story / Shop Collection split, and an "Are You an Artisan?" recruitment card sitting inline in the grid rather than buried in a footer.',
+          'Impact is the page that has to carry the claims without becoming a brochure. Three headline figures sit above four "How We Measure Change" cards that each name their own evidence — income parity, waste tonnage tracking, heritage badges awarded, a contribution calculator — then Advocacy Beyond the Storefront states the ethical charter, and Impact in Motion closes with the real stories behind the data points.',
+        ],
+      },
+    }
+  ),
 
-  build('scale-up-solution', {
-    title: 'ScaleUp Solution',
-    subtitle: 'Digital growth and AI visibility studio',
-    year: '2026',
-    discipline: 'Product UI · Marketing site',
-    role: 'UI/UX design',
-    tools: ['Stitch', 'Figma'],
-    summary:
-      'A studio selling custom web development, AI search optimisation and automated workflows across Thailand, Myanmar and Singapore. Designed in Google Stitch.',
-    sourceUrl: embed('https://stitch.withgoogle.com/projects/9275009312831750600'),
-    sourceLabel: 'Open in Google Stitch',
-    draft: true,
-  }),
+  build(
+    'smart-menu',
+    {
+      title: 'Smart Shop',
+      subtitle: 'A QR menu builder for restaurants, in Burmese and English',
+      year: '2026',
+      discipline: 'Product UI · SaaS',
+      role: 'UI/UX design — four marketing pages and the diner-facing menu',
+      tools: ['Figma', 'Stitch'],
+      summary:
+        'A menu-maker product for Myanmar restaurants: pick a template, build the menu, print the QR. Bilingual by default rather than as an afterthought, with auto QR sync so a printed code never goes stale.',
+      figmaEmbed: embed(
+        'https://www.figma.com/design/UOqswbVJROUNtc86fSgNsu/Untitled?node-id=0-1'
+      ),
+      draft: false,
+    },
+    {
+      final: {
+        title: 'Four marketing pages, and the thing being sold',
+        body: [
+          'Each page below is the full-length export, scrollable in place. The bilingual decision is visible in every one of them: Burmese and English sit in the same heading block rather than behind a language switch, because the buyer is a Myanmar shop owner and the diner may be a tourist. Home runs hero → three product tiers → industries → How it works → template picker → testimonials → FAQ, and the desktop mockup carries the Auto QR Sync callout that the whole product rests on.',
+          'The QR Code page is the argument, laid out as an explicit Problem/Solution pair — language barriers, Burmese-only menus, guests who cannot read the ingredients, ordering mistakes on one side; instant scanning with no app, machine translation, photos and direct phone ordering on the other. Pricing is in MMK with a monthly/annual toggle and a "not sure which plan" escape hatch beside the tiers, then an enterprise lane for 10–200+ locations. Resources sells the operations story: one central hub syncing four channels, the cost of fragmented menus, and digital signage controlled at scale.',
+          'The last screen is the product itself rather than a page about it — the diner-facing mobile menu, with search, a dietary and allergens filter, category tabs and an Ask AI button on the item card. It is the only screen where the customer, not the shop owner, is the user, which is why it is worth showing next to the marketing site.',
+        ],
+      },
+    }
+  ),
 
-  build('too-fast-to-sleep', {
-    title: 'Too Fast To Sleep',
-    subtitle: 'Bangkok’s original 24-hour café and co-working space',
-    year: '2026',
-    discipline: 'Hospitality · Web UI',
-    role: 'UI/UX design',
-    tools: ['Figma'],
-    summary:
-      'Designed for the decision made at 2am: is it open, can I get a seat, where is it. Verified opening hours, plug count and transit directions are answered above the fold, before anything else.',
-    draft: true,
-  }),
+  build(
+    'scale-up-solution',
+    {
+      title: 'ScaleUp Solution',
+      subtitle: 'Digital growth and AI visibility studio',
+      year: '2026',
+      discipline: 'Product UI · Marketing site',
+      role: 'UI/UX design — four final pages',
+      tools: ['Stitch', 'Figma'],
+      summary:
+        'A studio selling custom web development, AI search optimisation and automated workflows across Thailand, Myanmar and Singapore. Designed in Google Stitch, then rebuilt in Figma.',
+      figmaEmbed: embed(
+        'https://www.figma.com/design/E6khcSmkd9nArlnr59pHdC/Untitled?node-id=0-25'
+      ),
+      sourceUrl: embed('https://stitch.withgoogle.com/projects/9275009312831750600'),
+      sourceLabel: 'Open in Google Stitch',
+      draft: false,
+    },
+    {
+      final: {
+        title: 'Four pages, full length',
+        body: [
+          'Each page below is the full-length export, scrollable in place. A floating navigation capsule rides above all four, and the active item is a filled pill inside it — the one component that has to stay legible over a white hero, a dark hero and a photograph, which is why it went through the most passes.',
+          'Home is the studio pitch: the positioning line, the credibility row (10+ years, 80+ projects, 98% satisfaction, three regional markets), six service cards, transparent pricing in baht, a six-step process and the industries served. Service re-enters the same material at depth — a portfolio strip, the mission statement, then Website Strategy, UI/UX and Development each given their own alternating section, with the pricing table repeated near the bottom where the reader is closer to deciding.',
+          'Website Development is the most technical page and the one that has to prove capability rather than assert it: a Lighthouse/SEO/CLS metric row, four capability cards, a named engineering stack across frontend, backend and deployment, a four-step protocol, then an Initiate Project form that asks for budget and timeline up front. Contact keeps only what qualifies a lead — a 24-hour response promise, the same budget and timeline selects, and a three-question FAQ.',
+        ],
+      },
+    }
+  ),
+
+  build(
+    'too-fast-to-sleep',
+    {
+      title: 'Too Fast To Sleep',
+      subtitle: 'Bangkok’s original 24-hour café and co-working space',
+      year: '2026',
+      discipline: 'Hospitality · Web UI',
+      role: 'UI/UX design — four final pages',
+      tools: ['Figma'],
+      summary:
+        'Designed for the decision made at 2am: is it open, can I get a seat, where is it. Verified opening hours, plug count and transit directions are answered above the fold, before anything else.',
+      figmaEmbed: embed(
+        'https://www.figma.com/design/YyGxFnXJS0tHeihRdoTZiF/Too-Fast-To-Sleep?node-id=0-1'
+      ),
+      draft: false,
+    },
+    {
+      final: {
+        title: 'Four pages, full length',
+        body: [
+          'Each page below is the full-length export, scrollable in place. Home answers the 2am questions in order and then stops: a "Verified 24 Hours Open · 100+ Plugs Available" badge sits above the headline, directions are a primary button next to it, and the three cards under the hero are opening hours, community size and rating rather than marketing copy. Booking runs through LINE, which is where this audience already is, so the CTA says so instead of promising an app.',
+          'Spaces is the "can I get a seat" page, and it resolves seating into six named zones — Main Study Hall, Chamber of Secrets, Floor Seating, Café Counter, Greenhouse Lounge, Ground Floor Dining — each tagged with what actually decides it: 24/7 access, bookable, private, no booking, daylight, full meals. The full menu with baht prices sits on the same page, because at 3am "is the kitchen open" is part of the same decision.',
+          'Locations carries the flagship transit guide plus a branch grid — Rama IV, Siam Square, SWU, Surawong — each with its own hours, quirks and a Directions link, and a Need to Know card for the two things that vary by branch: private room availability and whether cash is accepted. About Us is the only page allowed to be slow, telling the origin story and the philosophy behind zero barriers, library-quiet balance and a power outlet at every seat.',
+        ],
+      },
+    }
+  ),
 ]
 
 export const caseStudyBySlug = (slug: string) => caseStudies.find((c) => c.slug === slug)

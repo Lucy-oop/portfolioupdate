@@ -33,12 +33,21 @@ for (const [path, url] of Object.entries(sectionModules)) {
 
 export type Screen = { label: string; src: string }
 
+/** Kept fully capitalised through title-casing, so `02-qr-code` reads "QR Code". */
+const ACRONYMS = new Set(['qr', 'ui', 'ux', 'ai', 'pos', 'seo', 'faq', 'cta'])
+
 const toLabel = (filename: string) =>
   filename
     .replace(/^\d+[-_]?/, '')
     .replace(/[-_]+/g, ' ')
     .trim()
-    .replace(/\b\w/g, (c) => c.toUpperCase()) || 'Screen'
+    .split(' ')
+    .map((word) =>
+      ACRONYMS.has(word.toLowerCase())
+        ? word.toUpperCase()
+        : word.replace(/^\w/, (c) => c.toUpperCase())
+    )
+    .join(' ') || 'Screen'
 
 const screensBySlug: Record<string, (Screen & { sortKey: string })[]> = {}
 for (const [path, url] of Object.entries(screenModules)) {
