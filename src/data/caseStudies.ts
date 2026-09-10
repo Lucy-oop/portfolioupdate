@@ -190,35 +190,61 @@ export const caseStudies: CaseStudy[] = [
     }
   ),
 
-  build('kith-craft', {
-    title: 'Kith Craft',
-    subtitle: 'Upcycled leather and Thai craftsmanship',
-    year: '2026',
-    discipline: 'Brand · E-commerce web UI',
-    role: 'UI/UX design',
-    tools: ['Figma'],
-    summary:
-      'A responsive e-commerce web design for a modern sustainable brand. Focused on high-converting product pages, clean navigation, and compelling brand storytelling to position upcycled fashion as modern luxury.',
-    figmaEmbed: embed(
-      'https://www.figma.com/design/xi8MxJzV5APGDxR52x2kKc/Untitled?node-id=0-1'
-    ),
-    draft: false,
-  }),
+  build(
+    'kith-craft',
+    {
+      title: 'Kith Craft',
+      subtitle: 'Upcycled leather and Thai craftsmanship',
+      year: '2026',
+      discipline: 'Brand · E-commerce web UI',
+      role: 'UI/UX design — four final pages',
+      tools: ['Figma'],
+      summary:
+        'A responsive e-commerce web design for a modern sustainable brand. Focused on high-converting product pages, clean navigation, and compelling brand storytelling to position upcycled fashion as modern luxury.',
+      figmaEmbed: embed(
+        'https://www.figma.com/design/xi8MxJzV5APGDxR52x2kKc/Untitled?node-id=0-1'
+      ),
+      draft: false,
+    },
+    {
+      final: {
+        title: 'Four pages, full length',
+        body: [
+          'Each page below is the full-length export, scrollable in place. The structural decision is that there is no cart: an EN/TH toggle and a persistent "Order on Facebook" button sit in the header, and every section closes into that same button. The brand already sells through Facebook, so the site was designed to feed that flow rather than to replace it with a checkout nobody would maintain.',
+          'Home runs the brand line, the four collection tiles, a Thai-led style lookbook, the Upcycled Leather Collection panel, and a Crafted with Purpose section that leans on the OTOP and SACIT certifications as the trust signal a Thai buyer recognises. Our Collection is the filterable catalogue — five category chips, colourway swatches on each card, pagination across three pages.',
+          'Kith Story carries the heritage and community argument, and Contact Us splits into store location, office location, general contact and Apply for Work, which is the page acknowledging that an artisan collective recruits as much as it sells. Support content is handled as four FAQ tiles — material, shipping, order and pay, returns — so the questions that block a Facebook order get answered before the buyer has to ask.',
+        ],
+      },
+    }
+  ),
 
-  build('amara', {
-    title: 'Amara',
-    subtitle: 'Handwoven bags from recycled plastic, sold as modern luxury',
-    year: '2026',
-    discipline: 'Brand · E-commerce web UI',
-    role: 'UI/UX design',
-    tools: ['Figma'],
-    summary:
-      'Amara is a luxury e-commerce platform showcasing handcrafted bags made from recycled plastic. Featuring a bilingual (EN/TH) layout and a direct Facebook order flow instead of a traditional cart, the design bridges sustainability and modern elegance.',
-    figmaEmbed: embed(
-      'https://www.figma.com/design/xi8MxJzV5APGDxR52x2kKc/Untitled?node-id=0-1'
-    ),
-    draft: false,
-  }),
+  build(
+    'amara',
+    {
+      title: 'Amara',
+      subtitle: 'Handwoven bags from recycled plastic, sold as modern luxury',
+      year: '2026',
+      discipline: 'Brand · E-commerce web UI',
+      role: 'UI/UX design — four final pages',
+      tools: ['Figma'],
+      summary:
+        'A luxury e-commerce concept for handwoven bags made from 100% recycled plastic. A bilingual EN/TH layout treats the sustainability claim as the selling point rather than a disclaimer, and prices accessible luxury from 490 baht.',
+      figmaEmbed: embed(
+        'https://www.figma.com/design/xi8MxJzV5APGDxR52x2kKc/Untitled?node-id=0-1'
+      ),
+      draft: false,
+    },
+    {
+      final: {
+        title: 'Four pages, full length',
+        body: [
+          'Each page below is the full-length export, scrollable in place. The bilingual handling is the quiet decision across all four: Thai sits directly beneath the English as a second voice in the same block, never behind a toggle, so the eco claim and the price land in whichever language the reader trusts.',
+          'Home makes the argument in three claims — 100% recycled plastics, handmade Thai heritage, accessible luxury from 490 baht — laid out as an editorial collage rather than a feature list, so the material reads as a design choice instead of a compromise. Collection is the catalogue: a dark architectural hero, free-shipping and starting-price badges, then nine bags with colourway swatches and pagination.',
+          'AMARA Story is the manifesto page — Turning Plastic Waste into Timeless Thai Craftsmanship, the four core pillars, and the stockist row across Bangkok, Pattaya, Samui and Phuket. Contact keeps the channels a Thai buyer actually uses: phone, LINE Official and email as Direct Channels on one side, a typed inquiry form on the other.',
+        ],
+      },
+    }
+  ),
 
   build(
     'restyle',
@@ -237,6 +263,32 @@ export const caseStudies: CaseStudy[] = [
       draft: false,
     },
     {
+      problem: {
+        body: [
+          'Users struggle to visualize how upcycled clothing fits into their daily wardrobe, leading to low conversion rates for sustainable fashion items.',
+        ],
+      },
+      research: {
+        body: [
+          'Feedback showed buyers care deeply about garment origins and fabric details, but felt overwhelmed by long text descriptions.',
+        ],
+      },
+      wireframes: {
+        body: [
+          'Standardized layout components to put full-length imagery first, placing sustainability metrics directly below the main product view.',
+        ],
+      },
+      system: {
+        body: [
+          'Applied clean neutral tones with high-contrast typography to keep focus on garment textures and eco-credentials.',
+        ],
+      },
+      outcome: {
+        title: 'What the design achieves',
+        body: [
+          'Created a clear shopping flow that highlights fabric origins instantly, making sustainable choices feel simple and engaging.',
+        ],
+      },
       final: {
         title: 'Five pages, full length',
         body: [
@@ -265,6 +317,32 @@ export const caseStudies: CaseStudy[] = [
       draft: false,
     },
     {
+      problem: {
+        body: [
+          'The platform failed to tell the story of the individual artisans behind each product, making the store feel generic rather than craft-focused.',
+        ],
+      },
+      research: {
+        body: [
+          'Shoppers were significantly more likely to buy when they knew who made the item and saw direct impact proof.',
+        ],
+      },
+      wireframes: {
+        body: [
+          'Rebuilt card components to highlight artisan attributions (by <maker>) across shop grids and dedicated story pages.',
+        ],
+      },
+      system: {
+        body: [
+          'Warm earth-toned palette with organic serif headings to reflect hand-crafted authenticity.',
+        ],
+      },
+      outcome: {
+        title: 'What the design achieves',
+        body: [
+          'Increased artisan visibility on every product card, establishing a direct emotional link between buyers and makers.',
+        ],
+      },
       final: {
         title: 'Four pages, full length',
         body: [
@@ -293,6 +371,32 @@ export const caseStudies: CaseStudy[] = [
       draft: false,
     },
     {
+      problem: {
+        body: [
+          'Business owners found it difficult to pair physical in-store displays with digital product catalogs and instant payment options.',
+        ],
+      },
+      research: {
+        body: [
+          'Store managers wanted a friction-free way for customers to scan items in-store and pay on their phones without staff help.',
+        ],
+      },
+      wireframes: {
+        body: [
+          'Created a dual-purpose navigation layout featuring prominent QR code generation and quick-buy checkout steps.',
+        ],
+      },
+      system: {
+        body: [
+          'High-visibility primary colors and bold status badges designed for fast legibility on mobile screens in full daylight.',
+        ],
+      },
+      outcome: {
+        title: 'What the design achieves',
+        body: [
+          'Delivered a unified QR-to-checkout flow that syncs inventory and pricing across physical and digital storefronts.',
+        ],
+      },
       final: {
         title: 'Four marketing pages, and the thing being sold',
         body: [
@@ -323,6 +427,32 @@ export const caseStudies: CaseStudy[] = [
       draft: false,
     },
     {
+      problem: {
+        body: [
+          'Potential clients found service offerings confusing and abandoned the contact funnel before submitting project inquiries.',
+        ],
+      },
+      research: {
+        body: [
+          'Visitors dropped off because intake forms asked for too much technical detail upfront instead of focusing on project goals.',
+        ],
+      },
+      wireframes: {
+        body: [
+          'Restructured the site navigation around service categories and simplified the project intake into a quick 3-step form.',
+        ],
+      },
+      system: {
+        body: [
+          'Modern dark mode interface with subtle floating navigation capsules for quick section switching.',
+        ],
+      },
+      outcome: {
+        title: 'What the design achieves',
+        body: [
+          'Streamlined service navigation and intake, making it easier for potential clients to request accurate proposals quickly.',
+        ],
+      },
       final: {
         title: 'Four pages, full length',
         body: [
@@ -351,6 +481,32 @@ export const caseStudies: CaseStudy[] = [
       draft: false,
     },
     {
+      problem: {
+        body: [
+          'Customers could not easily check real-time seating availability or find quiet study spots across multiple cafe locations.',
+        ],
+      },
+      research: {
+        body: [
+          "Guests frequently arrived at full capacity because the website didn't show spatial zones or busy hours.",
+        ],
+      },
+      wireframes: {
+        body: [
+          'Designed an interactive space guide featuring six named seating zones and live room updates per location.',
+        ],
+      },
+      system: {
+        body: [
+          'Deep navy blues and soft warm lighting accents mirroring the late-night cafe environment.',
+        ],
+      },
+      outcome: {
+        title: 'What the design achieves',
+        body: [
+          'Allowed customers to preview specific seating zones and locations before visiting, reducing crowding at peak hours.',
+        ],
+      },
       final: {
         title: 'Four pages, full length',
         body: [
