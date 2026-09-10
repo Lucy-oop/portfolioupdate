@@ -417,7 +417,7 @@ export const caseStudies: CaseStudy[] = [
       summary:
         'A studio selling custom web development, AI search optimisation and automated workflows across Thailand, Myanmar and Singapore. Designed in Google Stitch, then rebuilt in Figma.',
       figmaEmbed: embed(
-        'https://www.figma.com/design/E6khcSmkd9nArlnr59pHdC/Untitled?node-id=0-25'
+        'https://www.figma.com/design/E6khcSmkd9nArlnr59pHdC/Untitled?node-id=0-1'
       ),
       sourceUrl: embed('https://stitch.withgoogle.com/projects/9275009312831750600'),
       sourceLabel: 'Open in Google Stitch',
