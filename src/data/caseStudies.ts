@@ -201,9 +201,6 @@ export const caseStudies: CaseStudy[] = [
       tools: ['Figma'],
       summary:
         'A responsive e-commerce web design for a modern sustainable brand. Focused on high-converting product pages, clean navigation, and compelling brand storytelling to position upcycled fashion as modern luxury.',
-      figmaEmbed: embed(
-        'https://www.figma.com/design/xi8MxJzV5APGDxR52x2kKc/Untitled?node-id=0-1'
-      ),
       draft: false,
     },
     {
