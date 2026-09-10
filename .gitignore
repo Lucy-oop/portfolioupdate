@@ -7,3 +7,7 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# Raw design exports — kept locally, webp versions live in src/assets
+design-exports
+.history
