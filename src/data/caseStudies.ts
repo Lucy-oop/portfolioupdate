@@ -334,7 +334,7 @@ export const caseStudies: CaseStudy[] = [
       },
       system: {
         body: [
-          'Warm earth-toned palette with organic serif headings to reflect hand-crafted authenticity.',
+          'Warm earth-toned palette with clean modern sans-serif headings to reflect hand-crafted authenticity.',
         ],
       },
       outcome: {
@@ -444,7 +444,7 @@ export const caseStudies: CaseStudy[] = [
       },
       system: {
         body: [
-          'Modern dark mode interface with subtle floating navigation capsules for quick section switching.',
+          'Clean light mode layout with high-contrast accent bands and subtle floating navigation capsules for quick section switching.',
         ],
       },
       outcome: {
@@ -493,7 +493,7 @@ export const caseStudies: CaseStudy[] = [
       },
       wireframes: {
         body: [
-          'Designed an interactive space guide featuring six named seating zones and live room updates per location.',
+          'Designed an interactive space guide featuring six named seating zones, spatial zone previews and a direct Book-via-LINE flow.',
         ],
       },
       system: {
