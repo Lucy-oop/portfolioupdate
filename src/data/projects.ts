@@ -3,6 +3,7 @@ import quickbook from '../assets/work/quickbook.png'
 import taskflow from '../assets/work/taskflow.webp'
 import logvault from '../assets/work/logvault.jpg'
 import lucyAi from '../assets/work/lucyAi.png'
+import htweOo from '../assets/work/htwe-oo.webp'
 import nexus from '../assets/work/nexus.png'
 import trinkora from '../assets/work/trinkora.jpg'
 import momkitchen from '../assets/work/momkitchen.jpg'
@@ -37,6 +38,18 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    slug: 'htwe-oo-myanmar',
+    title: 'Htwe Oo Myanmar',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'A landing site for a family-run Burmese marionette theatre touring out of Phnom Penh and Bangkok — a scroll-driven hero, a heritage timeline running from the Yangon home theatre to the UNIMA Meschke prize and the Milan showcase, and a seat-reservation flow for the weekly Sunday show. Designed in Google Flow and Stitch, then built by hand.',
+    stack: ['React', 'TypeScript', 'Tailwind CSS', 'React Router'],
+    href: 'https://lucy-oop.github.io/Htwe-Oo-Myanmar/',
+    img: htweOo,
+    featured: true,
+  },
+  {
     slug: 'quickbook',
     title: 'Quickbook',
     year: '2026',
@@ -58,7 +71,6 @@ export const projects: Project[] = [
     stack: ['React', 'TypeScript', 'Tailwind CSS', 'PostgreSQL'],
     href: 'https://log-vault.vercel.app',
     img: logvault,
-    featured: true,
   },
   {
     slug: 'portfolio-ai-assistant',
