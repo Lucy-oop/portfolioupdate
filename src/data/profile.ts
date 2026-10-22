@@ -10,7 +10,7 @@ export const profile = {
   availability: 'Open to junior frontend roles',
   tagline: 'I design it before I build it.',
   intro:
-    'A junior frontend developer in Bangkok who came to code from the design side — so the Figma file usually opens before the editor.',
+    'A junior frontend developer in Bangkok who came to code from the design side — Figma-to-Code implementation using Stitch and Tailwind.',
 } as const
 
 export const socials = [
@@ -33,7 +33,7 @@ export const socials = [
 ] as const
 
 export const aboutCopy = [
-  'I’m a junior frontend developer based in Bangkok. I came to code from the design side, which is why I still open Figma before the editor — settling the type scale, the spacing rhythm and the component states first makes the build the easy part.',
+  'I’m a junior frontend developer based in Bangkok. I came to code from the design side, and my workflow is Figma-to-Code implementation using Stitch and Tailwind — settling the type scale, the spacing rhythm and the component states first makes the build the easy part.',
   'What I actually enjoy is the debugging. That hour where something is broken for a reason you can’t see yet, and then you can, and it works. That’s the part that made this stick.',
   'I’m looking for a junior frontend role where I can keep doing both halves — designing the interface, then shipping it properly.',
 ] as const

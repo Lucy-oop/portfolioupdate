@@ -1,15 +1,12 @@
 import mingalar from '../assets/work/mingalardelivery.png'
 import quickbook from '../assets/work/quickbook.png'
-import taskflow from '../assets/work/taskflow.webp'
 import logvault from '../assets/work/logvault.jpg'
 import lucyAi from '../assets/work/lucyAi.png'
 import htweOo from '../assets/work/htwe-oo.webp'
 import nexus from '../assets/work/nexus.png'
 import trinkora from '../assets/work/trinkora.jpg'
-import momkitchen from '../assets/work/momkitchen.jpg'
 import ecommerce from '../assets/work/ecommerce.jpg'
 import myflix from '../assets/work/myflix.jpg'
-import kfc from '../assets/work/kfc.jpg'
 
 export type Project = {
   slug: string
@@ -95,17 +92,6 @@ export const projects: Project[] = [
     img: nexus,
   },
   {
-    slug: 'taskflow-dashboard',
-    title: 'TaskFlow Dashboard',
-    year: '2026',
-    role: 'Frontend + auth',
-    blurb:
-      'A task manager behind a login: create tasks with priority and due dates, then search, filter and sort the list.',
-    stack: ['JavaScript', 'Tailwind CSS', 'REST API', 'Auth'],
-    href: 'https://taskflow-dashboard1-ten.vercel.app',
-    img: taskflow,
-  },
-  {
     slug: 'trinkora',
     title: 'TrinKora Clothing',
     year: '2025',
@@ -114,16 +100,6 @@ export const projects: Project[] = [
     stack: ['React', 'JavaScript'],
     href: 'https://lucy-oop.github.io/TRINKORAClothing/',
     img: trinkora,
-  },
-  {
-    slug: 'moms-kitchen',
-    title: 'Mom’s Kitchen',
-    year: '2025',
-    role: 'Frontend',
-    blurb: 'Restaurant ordering flow with a running basket.',
-    stack: ['React', 'JavaScript'],
-    href: 'https://lucy-oop.github.io/mom-skitchen/',
-    img: momkitchen,
   },
   {
     slug: 'ecommerce-ts',
@@ -144,16 +120,6 @@ export const projects: Project[] = [
     stack: ['React', 'Firebase', 'REST API'],
     href: 'https://lucy-oop.github.io/myFlix-L/',
     img: myflix,
-  },
-  {
-    slug: 'kfc',
-    title: 'KFC Website',
-    year: '2024',
-    role: 'Frontend',
-    blurb: 'A pixel-matching rebuild, done to drill layout and responsive fundamentals.',
-    stack: ['HTML', 'Tailwind CSS', 'JavaScript'],
-    href: 'https://lucy-oop.github.io/KFC-L/',
-    img: kfc,
   },
 ]
 
