@@ -298,60 +298,6 @@ export const caseStudies: CaseStudy[] = [
   ),
 
   build(
-    'wan-mai',
-    {
-      title: 'Wan Mai',
-      subtitle: 'A social enterprise marketplace across Myanmar and Thailand',
-      year: '2026',
-      discipline: 'Social enterprise · Marketplace UI',
-      role: 'UI/UX design — four final pages',
-      tools: ['Figma'],
-      summary:
-        'Nurturing women-led small businesses through a community-driven marketplace. The design leads with the artisans rather than the products — Shop, Meet Our Artisans, Impact and Workshops all sit at the top level.',
-      figmaEmbed: embed(
-        'https://www.figma.com/design/fFxsFlGOdr89Zpm7Gr6twk/Untitled?node-id=0-1'
-      ),
-      draft: false,
-    },
-    {
-      problem: {
-        body: [
-          'The platform failed to tell the story of the individual artisans behind each product, making the store feel generic rather than craft-focused.',
-        ],
-      },
-      research: {
-        body: [
-          'Shoppers were significantly more likely to buy when they knew who made the item and saw direct impact proof.',
-        ],
-      },
-      wireframes: {
-        body: [
-          'Rebuilt card components to highlight artisan attributions (by <maker>) across shop grids and dedicated story pages.',
-        ],
-      },
-      system: {
-        body: [
-          'Warm earth-toned palette with clean modern sans-serif headings to reflect hand-crafted authenticity.',
-        ],
-      },
-      outcome: {
-        title: 'What the design achieves',
-        body: [
-          'Increased artisan visibility on every product card, establishing a direct emotional link between buyers and makers.',
-        ],
-      },
-      final: {
-        title: 'Four pages, full length',
-        body: [
-          'Each page below is the full-length export, scrollable in place. Home opens on "Empowering dreams. Bridging borders." and then puts the makers before the merchandise — a collective-partners collage, the curated product row, and a full artisan feature on Ju Ju before the page asks for anything. Every product card carries a "by <maker>" line under the title, so attribution rides along with the price rather than living on a separate page.',
-          'Shop is the catalogue: category tiles across accessories, bags, crochet, décor, eco-print, self-care, fabric and stationery, then seven filter chips, a product count and a price sort. Meet Our Artisans is the same catalogue logic applied to people — partner cards tagged Heritage, Eco-Action or Empowerment, each with a Read Story / Shop Collection split, and an "Are You an Artisan?" recruitment card sitting inline in the grid rather than buried in a footer.',
-          'Impact is the page that has to carry the claims without becoming a brochure. Three headline figures sit above four "How We Measure Change" cards that each name their own evidence — income parity, waste tonnage tracking, heritage badges awarded, a contribution calculator — then Advocacy Beyond the Storefront states the ethical charter, and Impact in Motion closes with the real stories behind the data points.',
-        ],
-      },
-    }
-  ),
-
-  build(
     'smart-menu',
     {
       title: 'Smart Shop',

@@ -7,6 +7,8 @@ import nexus from '../assets/work/nexus.png'
 import trinkora from '../assets/work/trinkora.jpg'
 import ecommerce from '../assets/work/ecommerce.jpg'
 import myflix from '../assets/work/myflix.jpg'
+import lifeos from '../assets/work/lifeos.webp'
+import wanmai from '../assets/work/wanmai.webp'
 
 export type Project = {
   slug: string
@@ -22,6 +24,18 @@ export type Project = {
 }
 
 export const projects: Project[] = [
+  {
+    slug: 'lifeos',
+    title: 'LifeOS',
+    year: '2026',
+    role: 'Solo build — design, frontend + backend',
+    blurb:
+      'A privacy-first personal dashboard shipped as a lightweight, installable PWA — tasks, focus sessions, goals and notes synced live across devices through Cloud Firestore, with a vault that is encrypted on the client before anything leaves the browser. Firebase Authentication for accounts, Firebase Hosting for delivery, and no framework overhead.',
+    stack: ['Vanilla JS', 'Vite', 'Firebase Auth', 'Cloud Firestore'],
+    href: 'https://lifeos-cec7a.web.app/',
+    img: lifeos,
+    featured: true,
+  },
   {
     slug: 'mingalar-express',
     title: 'Mingalar Express',
@@ -56,7 +70,17 @@ export const projects: Project[] = [
     stack: ['Next.js 15', 'TypeScript', 'Supabase', 'PostgreSQL RLS'],
     href: 'https://quickbook-one.vercel.app/',
     img: quickbook,
-    featured: true,
+  },
+  {
+    slug: 'wan-mai',
+    title: 'WanMai',
+    year: '2026',
+    role: 'UI/UX design, frontend, network testing + debugging',
+    blurb:
+      'A social enterprise marketplace for women-led small businesses across Myanmar and Thailand. I designed the UI, built the frontend, and handled network testing and error fixing — the design leads with the artisans rather than the products, with Shop, Meet Our Artisans and Impact all at the top level.',
+    stack: ['React', 'TypeScript', 'Node.js', 'Tailwind CSS'],
+    href: 'https://wan-mai.onrender.com/',
+    img: wanmai,
   },
   {
     slug: 'log-vault',
