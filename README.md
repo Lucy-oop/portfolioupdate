@@ -1,6 +1,6 @@
 # Yee Mon Thant (Lucy) — Portfolio
 
-Personal site for a junior frontend developer in Bangkok. React 19 + TypeScript + Vite + Tailwind CSS v4.
+Personal site for a junior fullstack developer in Bangkok. React 19 + TypeScript + Vite + Tailwind CSS v4.
 
 ```bash
 npm install

@@ -1,16 +1,16 @@
 export const profile = {
   fullName: 'Yee Mon Thant',
   preferredName: 'Lucy',
-  role: 'Junior Frontend Developer',
+  role: 'Junior Fullstack Developer',
   location: 'Bangkok, Thailand',
   timezone: 'GMT+7',
   email: 'tomon5609@gmail.com',
   phone: '+9 41574675',
   cv: '/yee-mon-thant-cv.pdf',
-  availability: 'Open to junior frontend roles',
+  availability: 'Open to junior fullstack roles',
   tagline: 'I design it before I build it.',
   intro:
-    'A junior frontend developer in Bangkok who came to code from the design side — Figma-to-Code implementation using Stitch and Tailwind.',
+    'A junior fullstack developer in Bangkok who came to code from the design side — Figma-to-Code implementation using Stitch and Tailwind.',
 } as const
 
 export const socials = [
@@ -33,9 +33,9 @@ export const socials = [
 ] as const
 
 export const aboutCopy = [
-  'I’m a junior frontend developer based in Bangkok. I came to code from the design side, and my workflow is Figma-to-Code implementation using Stitch and Tailwind — settling the type scale, the spacing rhythm and the component states first makes the build the easy part.',
+  'I’m a junior fullstack developer based in Bangkok. I came to code from the design side, and my workflow is Figma-to-Code implementation using Stitch and Tailwind — settling the type scale, the spacing rhythm and the component states first makes the build the easy part.',
   'What I actually enjoy is the debugging. That hour where something is broken for a reason you can’t see yet, and then you can, and it works. That’s the part that made this stick.',
-  'I’m looking for a junior frontend role where I can keep doing both halves — designing the interface, then shipping it properly.',
+  'I’m looking for a junior fullstack role where I can keep doing both halves — designing the interface, then shipping it properly.',
 ] as const
 
 export const facts = [

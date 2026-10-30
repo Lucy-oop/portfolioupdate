@@ -16,7 +16,7 @@ export default function About() {
           <span className="bg-lilac-soft px-2 text-lilac">finally works.</span>
         </>
       }
-      lede="Design-side background, frontend job. The two halves are the point, not a coincidence."
+      lede="Design-side background, fullstack job. The two halves are the point, not a coincidence."
     >
       <div className="grid grid-cols-1 gap-3.5 sm:gap-4 lg:grid-cols-3">
         {/* ---- narrative ---- */}

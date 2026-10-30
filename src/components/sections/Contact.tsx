@@ -60,7 +60,7 @@ export default function Contact() {
       index="05"
       eyebrow="Contact"
       title="Let’s build something."
-      lede="I’m looking for a junior frontend role, and open to freelance in the meantime. If you have something in mind, tell me about it."
+      lede="I’m looking for a junior fullstack role, and open to freelance in the meantime. If you have something in mind, tell me about it."
     >
       <div className="grid grid-cols-1 gap-3.5 sm:gap-4 lg:grid-cols-5">
         {/* ---- direct details ---- */}
