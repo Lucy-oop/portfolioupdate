@@ -7,6 +7,7 @@ import nexus from '../assets/work/nexus.png'
 import trinkora from '../assets/work/trinkora.jpg'
 import ecommerce from '../assets/work/ecommerce.jpg'
 import myflix from '../assets/work/myflix.jpg'
+import goldenGoat from '../assets/work/goldengoat.webp'
 import lifeos from '../assets/work/lifeos.webp'
 import wanmai from '../assets/work/wanmai.webp'
 
@@ -24,6 +25,18 @@ export type Project = {
 }
 
 export const projects: Project[] = [
+  {
+    slug: 'golden-goat-myanmar',
+    title: 'Golden G.O.A.T Myanmar',
+    year: '2026',
+    role: 'Full-stack build',
+    blurb:
+      'A brand site for a family juice business born at the foot of Mount Popa — natural juices from Myanmar’s volcanic dry zone, no added cane sugar and no preservatives. Trilingual throughout in English, Chinese and Burmese, with a distributor “Join with us” flow and the brand story told through market stalls and trade fairs.',
+    stack: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS'],
+    href: 'https://lucy-oop.github.io/Golden-Goat-Myanmar/',
+    img: goldenGoat,
+    featured: true,
+  },
   {
     slug: 'lifeos',
     title: 'LifeOS',
@@ -58,7 +71,6 @@ export const projects: Project[] = [
     stack: ['React', 'TypeScript', 'Tailwind CSS', 'React Router'],
     href: 'https://lucy-oop.github.io/Htwe-Oo-Myanmar/',
     img: htweOo,
-    featured: true,
   },
   {
     slug: 'quickbook',
