@@ -147,41 +147,67 @@
     mask-image: linear-gradient(to top, #000 0%, transparent 60%);
   }
 
-  /* Case-study process line: the fill scales with --p (0..1), set on scroll. */
-  .process-fill {
-    transform-origin: top;
-    transform: scaleY(var(--p, 1));
-  }
-  @media (min-width: 48rem) {
-    .process-fill {
-      transform-origin: left;
-      transform: scaleX(var(--p, 1));
-    }
-  }
-  .process-stop {
+  /* Process strip: chips light up in turn as it scrolls through. */
+  .process-chip {
     transition:
-      border-color 0.3s,
-      color 0.3s,
-      box-shadow 0.3s;
+      border-color 0.35s,
+      color 0.35s,
+      box-shadow 0.35s;
   }
-  .process-stop[data-lit] {
+  .process-chip[data-lit] {
     border-color: var(--color-lilac);
-    color: var(--color-lilac);
-    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-lilac) 18%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-lilac) 16%, transparent);
   }
 
-  /* Stacked case cards dim as the next one covers them (--dim set on scroll). */
-  .stack-card {
-    position: relative;
+  /* Case-study index: underline draws, title nudges, other rows dim. */
+  .index-title {
+    display: inline-block;
+    padding-bottom: 0.08em;
+    background: linear-gradient(90deg, var(--color-lilac), var(--color-peach)) no-repeat 0 100% / 0% 3px;
+    transition:
+      background-size 0.5s var(--ease-out-soft),
+      transform 0.5s var(--ease-out-soft),
+      color 0.3s;
   }
-  .stack-card::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: var(--radius-bento);
-    background: var(--color-canvas);
-    opacity: var(--dim, 0);
-    pointer-events: none;
+  .index-row {
+    transition: opacity 0.3s;
+  }
+  .index-read {
+    opacity: 0;
+    transform: translateX(-6px);
+    transition:
+      opacity 0.3s,
+      transform 0.3s var(--ease-out-soft);
+  }
+  .index-row a:is(:hover, :focus-visible) .index-title {
+    background-size: 100% 3px;
+    transform: translateX(1.5rem);
+  }
+  .index-row a:is(:hover, :focus-visible) .index-read {
+    opacity: 1;
+    transform: none;
+  }
+  .index-row a:focus-visible {
+    outline: none;
+  }
+  .index-row a:focus-visible .index-title {
+    color: var(--color-lilac);
+  }
+  @media (hover: hover) {
+    .index-list:has(a:hover) .index-row:not(:has(a:hover)) {
+      opacity: 0.35;
+    }
+  }
+
+  /* Floating preview covers: the new one wipes up over the old. */
+  .cover-layer {
+    clip-path: inset(100% 0 0 0);
+    transition: clip-path 0.55s var(--ease-out-soft) 0.4s;
+  }
+  .cover-layer[data-active] {
+    z-index: 1;
+    clip-path: inset(0);
+    transition-delay: 0s;
   }
 
   /* Stack rows: endless sideways drift, the second row the other way. */
@@ -240,11 +266,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* Scroll-scrubbed pieces rest in their finished state. */
-  .process-stop {
-    border-color: var(--color-lilac);
-    color: var(--color-lilac);
-  }
+
   html {
     scroll-behavior: auto;
   }
