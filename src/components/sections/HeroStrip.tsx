@@ -35,7 +35,8 @@ export default function HeroStrip() {
                 data-cursor="View"
                 className={`${miniCardClass} tile-hover`}
               >
-                <MiniCardFace project={p} />
+                {/* The intro's landing targets load straight away; the rest wait for the drift. */}
+                <MiniCardFace project={p} lazy={copy || i >= 8} />
               </a>
             </li>
           )

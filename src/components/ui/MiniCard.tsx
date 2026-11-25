@@ -8,13 +8,22 @@ import type { Project } from '../../data/projects'
 export const miniCardClass =
   'mini-card block w-(--mini-w) shrink-0 overflow-hidden rounded-tile border border-line bg-card'
 
-export function MiniCardFace({ project: p, onImageDone }: { project: Project; onImageDone?: () => void }) {
+export function MiniCardFace({
+  project: p,
+  onImageDone,
+  lazy = false,
+}: {
+  project: Project
+  onImageDone?: () => void
+  lazy?: boolean
+}) {
   return (
     <>
       <img
         src={p.img}
         alt=""
         draggable={false}
+        loading={lazy ? 'lazy' : undefined}
         onLoad={onImageDone}
         onError={onImageDone}
         className="aspect-16/10 w-full object-cover object-top"

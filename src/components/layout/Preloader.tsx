@@ -12,8 +12,9 @@ import { setScrollLocked } from './SmoothScroll'
  * First visit of a session, one continuous sequence:
  *
  *   ring     project cards spin on a tilted 3D ring, mirrored on the floor,
- *            while a big counter runs to 100 (card images + page load;
- *            at least MIN_SPIN, never more than MAX_SPIN)
+ *            while a big counter runs to 100 as the 8 card images load
+ *            (at least MIN_SPIN, never more than MAX_SPIN — shorter on
+ *            phones, where waiting costs the most)
  *   arc      the ring unrolls into a wide curved arc that pushes toward the
  *            camera, and the overlay dissolves so the hero shows behind it
  *   strip    the arc flattens and each card lands exactly on its twin in
@@ -34,6 +35,7 @@ const TILT = 0.21 // radians the ring leans toward the viewer
 const SPIN_SPEED = 0.6 // rad/s
 const MIN_SPIN = 1600
 const MAX_SPIN = 4200
+const MAX_SPIN_PHONE = 2800
 const ARC = 1100
 const FLATTEN = 900
 
@@ -96,9 +98,6 @@ function RingIntro({ onDone }: { onDone: () => void }) {
     const behind = Array.from(document.querySelectorAll<HTMLElement>('#root > *:not([data-preloader])'))
     behind.forEach((el) => el.setAttribute('inert', ''))
 
-    let pageLoaded = document.readyState === 'complete'
-    const onLoad = () => (pageLoaded = true)
-    window.addEventListener('load', onLoad)
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') skipRef.current = true
     }
@@ -157,14 +156,16 @@ function RingIntro({ onDone }: { onDone: () => void }) {
       const elapsed = now - start
 
       // ---- progress + phase ----
-      const pct = Math.round((loadedRef.current / n) * 90 + (pageLoaded ? 10 : 0))
+      const pct = Math.round((loadedRef.current / n) * 100)
       if (pct !== shownPercent) {
         shownPercent = pct
         setPercent(pct)
       }
       if (skipRef.current) return finish()
-      const ready = loadedRef.current >= n && pageLoaded
-      if (!arcAt && ((ready && elapsed >= MIN_SPIN) || elapsed >= MAX_SPIN)) {
+      // Only the ring's own images gate it; the rest of the page loads behind.
+      const ready = loadedRef.current >= n
+      const cap = window.innerWidth < 640 ? MAX_SPIN_PHONE : MAX_SPIN
+      if (!arcAt && ((ready && elapsed >= MIN_SPIN) || elapsed >= cap)) {
         arcAt = now
         intro.open() // the hero starts fading in behind the unrolling ring
       }
@@ -228,7 +229,6 @@ function RingIntro({ onDone }: { onDone: () => void }) {
 
     return () => {
       cancelAnimationFrame(frame)
-      window.removeEventListener('load', onLoad)
       window.removeEventListener('keydown', onKey)
       // Unmounted early (HMR, StrictMode's test unmount): never leave the page locked.
       if (!finished) release()
