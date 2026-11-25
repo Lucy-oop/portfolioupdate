@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, GalleryHorizontal, LayoutGrid, Lis
 import Section from '../ui/Section'
 import Reveal from '../ui/Reveal'
 import Tag from '../ui/Tag'
+import TiltCard from '../ui/TiltCard'
 import { useReducedMotion } from '../../lib/useReducedMotion'
 import { cn } from '../../lib/cn'
 import {
@@ -175,7 +176,9 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
             }}
             className="w-(--card-w) shrink-0 snap-start"
           >
-            <ProjectCard project={p} index={i} />
+            <TiltCard>
+              <ProjectCard project={p} index={i} />
+            </TiltCard>
           </div>
         ))}
       </div>
@@ -289,6 +292,7 @@ function ProjectCard({ project: p, index }: { project: Project; index: number })
       target="_blank"
       rel="noreferrer"
       draggable={false}
+      data-cursor="View"
       className="tile tile-hover group flex h-full flex-col overflow-hidden"
     >
       <div className="aspect-16/10 overflow-hidden border-b border-line bg-canvas-sunk">
@@ -338,7 +342,9 @@ function ProjectGrid({ projects }: { projects: Project[] }) {
     <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
       {projects.map((p, i) => (
         <Reveal key={p.slug} delay={Math.min(i, 6) * 0.04}>
-          <ProjectCard project={p} index={i} />
+          <TiltCard>
+            <ProjectCard project={p} index={i} />
+          </TiltCard>
         </Reveal>
       ))}
     </div>

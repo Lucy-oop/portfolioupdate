@@ -88,7 +88,8 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    overflow-x: hidden;
+    /* clip, not hidden — hidden makes body a scroll container and breaks sticky. */
+    overflow-x: clip;
   }
 
   ::selection {
@@ -146,6 +147,54 @@
     mask-image: linear-gradient(to top, #000 0%, transparent 60%);
   }
 
+  /* Case-study process line: the fill scales with --p (0..1), set on scroll. */
+  .process-fill {
+    transform-origin: top;
+    transform: scaleY(var(--p, 1));
+  }
+  @media (min-width: 48rem) {
+    .process-fill {
+      transform-origin: left;
+      transform: scaleX(var(--p, 1));
+    }
+  }
+  .process-stop {
+    transition:
+      border-color 0.3s,
+      color 0.3s,
+      box-shadow 0.3s;
+  }
+  .process-stop[data-lit] {
+    border-color: var(--color-lilac);
+    color: var(--color-lilac);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--color-lilac) 18%, transparent);
+  }
+
+  /* Stacked case cards dim as the next one covers them (--dim set on scroll). */
+  .stack-card {
+    position: relative;
+  }
+  .stack-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-bento);
+    background: var(--color-canvas);
+    opacity: var(--dim, 0);
+    pointer-events: none;
+  }
+
+  /* Stack rows: endless sideways drift, the second row the other way. */
+  .marquee-track {
+    animation: strip-drift 55s linear infinite;
+  }
+  .marquee-reverse {
+    animation-direction: reverse;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
   /* Hero strip: a slow endless drift, held until the intro hands over. */
   .strip-track {
     animation: strip-drift 70s linear infinite;
@@ -183,6 +232,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  /* Scroll-scrubbed pieces rest in their finished state. */
+  .process-stop {
+    border-color: var(--color-lilac);
+    color: var(--color-lilac);
+  }
   html {
     scroll-behavior: auto;
   }

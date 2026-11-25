@@ -32,6 +32,7 @@ export default function HeroStrip() {
                 tabIndex={copy ? -1 : undefined}
                 aria-label={copy ? undefined : `${p.title} (opens in a new tab)`}
                 data-strip-card={copy ? undefined : i}
+                data-cursor="View"
                 className={`${miniCardClass} tile-hover`}
               >
                 <MiniCardFace project={p} />

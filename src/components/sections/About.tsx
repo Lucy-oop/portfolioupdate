@@ -1,10 +1,15 @@
+import { useRef } from 'react'
+import portrait from '../../assets/portrait.webp'
+import ParticleHalo from '../fx/ParticleHalo'
 import Section from '../ui/Section'
 import Reveal from '../ui/Reveal'
 import Meter from '../ui/Meter'
 import Tag from '../ui/Tag'
-import { aboutCopy, facts, softSkills, spokenLanguages } from '../../data/profile'
+import { aboutCopy, facts, profile, softSkills, spokenLanguages } from '../../data/profile'
 
 export default function About() {
+  const portraitRef = useRef<HTMLImageElement>(null)
+
   return (
     <Section
       id="about"
@@ -22,6 +27,26 @@ export default function About() {
         {/* ---- narrative ---- */}
         <Reveal className="lg:col-span-2">
           <div className="tile flex h-full flex-col gap-5 p-7 sm:p-9">
+            {/* The hero's halo again, faint and still: it just breathes around the portrait. */}
+            <div className="mb-2 flex items-center gap-4">
+              <div className="relative size-16 shrink-0">
+                <div className="pointer-events-none absolute -inset-14 opacity-70">
+                  <ParticleHalo anchorRef={portraitRef} interactive={false} size={0.3} />
+                </div>
+                <img
+                  ref={portraitRef}
+                  src={portrait}
+                  alt=""
+                  className="relative size-16 rounded-full border border-line object-cover object-top"
+                />
+              </div>
+              <div>
+                <p className="font-display text-lg font-semibold leading-tight">{profile.fullName}</p>
+                <p className="text-[13px] text-muted">
+                  {profile.preferredName} · {profile.location}
+                </p>
+              </div>
+            </div>
             {aboutCopy.map((p) => (
               <p key={p.slice(0, 24)} className="text-[15px] leading-relaxed text-muted">
                 {p}

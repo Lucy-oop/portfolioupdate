@@ -3,6 +3,9 @@ import { AlertCircle, ArrowUpRight, Check, Mail, Phone } from 'lucide-react'
 import Section from '../ui/Section'
 import Reveal from '../ui/Reveal'
 import { profile, socials } from '../../data/profile'
+import { burst } from '../../lib/burst'
+import { useMagnetic } from '../../lib/useMagnetic'
+import { useReducedMotion } from '../../lib/useReducedMotion'
 
 // Public by design — Web3Forms access keys are meant to ship client-side.
 // The honeypot field below is what keeps the inbox usable.
@@ -14,6 +17,8 @@ type Status = 'idle' | 'sending' | 'success' | 'error'
 export default function Contact() {
   const [form, setForm] = useState(empty)
   const [status, setStatus] = useState<Status>('idle')
+  const reduced = useReducedMotion()
+  const sendRef = useMagnetic<HTMLButtonElement>(0.2)
 
   const onChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -48,7 +53,12 @@ export default function Contact() {
       })
       const data = await res.json()
       setStatus(data.success ? 'success' : 'error')
-      if (data.success) setForm(empty)
+      if (data.success) {
+        setForm(empty)
+        // The send button bursts into the three colours.
+        const r = sendRef.current?.getBoundingClientRect()
+        if (r && !reduced) burst(r.left + r.width / 2, r.top + r.height / 2)
+      }
     } catch {
       setStatus('error')
     }
@@ -141,16 +151,14 @@ export default function Contact() {
             />
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <Field id="c-name" label="Name" name="name" value={form.name} onChange={onChange} autoComplete="name" placeholder="Your name" />
-              <Field id="c-email" label="Email" name="email" type="email" required value={form.email} onChange={onChange} autoComplete="email" placeholder="you@example.com" />
+              <Field id="c-name" label="Your name" name="name" value={form.name} onChange={onChange} autoComplete="name" />
+              <Field id="c-email" label="Email" name="email" type="email" required value={form.email} onChange={onChange} autoComplete="email" />
             </div>
 
-            <Field id="c-subject" label="Subject" name="subject" value={form.subject} onChange={onChange} placeholder="What is this about?" />
+            <Field id="c-subject" label="What is this about?" name="subject" value={form.subject} onChange={onChange} />
 
-            <div className="flex flex-1 flex-col gap-1.5">
-              <label htmlFor="c-message" className="font-mono text-[10.5px] uppercase tracking-wider text-muted">
-                Message <span aria-hidden>*</span>
-              </label>
+            {/* Floating label: rests inside the field, rises when focused or filled. */}
+            <div className="relative flex flex-1 flex-col">
               <textarea
                 id="c-message"
                 name="message"
@@ -158,15 +166,19 @@ export default function Contact() {
                 required
                 value={form.message}
                 onChange={onChange}
-                placeholder="Tell me about the project, the role, or just say hello."
-                className="min-h-32 flex-1 resize-y rounded-tile border border-line bg-canvas-sunk px-4 py-3 text-[15px] outline-none transition-colors placeholder:text-muted/70 focus:border-lilac"
+                placeholder=" "
+                className="peer min-h-32 flex-1 resize-y rounded-tile border border-line bg-canvas-sunk px-4 pb-3 pt-7 text-[15px] outline-none transition-colors focus:border-lilac"
               />
+              <label htmlFor="c-message" className={floatLabel('peer-placeholder-shown:top-4')}>
+                Message <span aria-hidden>*</span>
+              </label>
             </div>
 
             <button
+              ref={sendRef}
               type="submit"
               disabled={status === 'sending'}
-              className="inline-flex items-center justify-center gap-1.5 rounded-full bg-ink px-6 py-3.5 text-sm font-semibold text-canvas transition-opacity hover:opacity-88 disabled:opacity-55"
+              className="inline-flex items-center justify-center gap-1.5 self-end rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-canvas transition-opacity hover:opacity-88 disabled:opacity-55"
             >
               {status === 'sending' ? 'Sending…' : 'Send message'}
               {status !== 'sending' && <ArrowUpRight size={15} aria-hidden />}
@@ -192,6 +204,20 @@ export default function Contact() {
   )
 }
 
+/**
+ * A floating label: sits inside the empty field like a placeholder, then
+ * rises to a small caption when the field is focused or filled. Driven by the
+ * field's `:placeholder-shown` (its placeholder is a single space), so it
+ * needs no state. `resting` positions it while it rests.
+ */
+const floatLabel = (resting: string) =>
+  [
+    'pointer-events-none absolute left-4 top-2.5 font-mono text-[10px] uppercase tracking-wider text-muted transition-all duration-200',
+    resting,
+    'peer-placeholder-shown:text-[15px] peer-placeholder-shown:normal-case peer-placeholder-shown:tracking-normal peer-placeholder-shown:font-sans',
+    'peer-focus:top-2.5 peer-focus:translate-y-0 peer-focus:font-mono peer-focus:text-[10px] peer-focus:uppercase peer-focus:tracking-wider peer-focus:text-lilac',
+  ].join(' ')
+
 type FieldProps = {
   id: string
   label: string
@@ -201,21 +227,21 @@ type FieldProps = {
   type?: string
   required?: boolean
   autoComplete?: string
-  placeholder?: string
 }
 
 function Field({ id, label, required, ...rest }: FieldProps) {
   return (
-    <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="font-mono text-[10.5px] uppercase tracking-wider text-muted">
-        {label} {required && <span aria-hidden>*</span>}
-      </label>
+    <div className="relative">
       <input
         id={id}
         required={required}
+        placeholder=" "
         {...rest}
-        className="rounded-tile border border-line bg-canvas-sunk px-4 py-3 text-[15px] outline-none transition-colors placeholder:text-muted/70 focus:border-lilac"
+        className="peer w-full rounded-tile border border-line bg-canvas-sunk px-4 pb-2.5 pt-6 text-[15px] outline-none transition-colors focus:border-lilac"
       />
+      <label htmlFor={id} className={floatLabel('peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2')}>
+        {label} {required && <span aria-hidden>*</span>}
+      </label>
     </div>
   )
 }
