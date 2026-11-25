@@ -1,18 +1,36 @@
-import mingalar from '../assets/work/mingalardelivery.png'
-import quickbook from '../assets/work/quickbook.png'
-import logvault from '../assets/work/logvault.jpg'
-import lucyAi from '../assets/work/lucyAi.png'
+import mingalar from '../assets/work/mingalardelivery.webp'
+import quickbook from '../assets/work/quickbook.webp'
+import logvault from '../assets/work/logvault.webp'
+import lucyAi from '../assets/work/lucyAi.webp'
 import htweOo from '../assets/work/htwe-oo.webp'
-import nexus from '../assets/work/nexus.png'
-import trinkora from '../assets/work/trinkora.jpg'
-import ecommerce from '../assets/work/ecommerce.jpg'
-import myflix from '../assets/work/myflix.jpg'
+import nexus from '../assets/work/nexus.webp'
+import trinkora from '../assets/work/trinkora.webp'
+import ecommerce from '../assets/work/ecommerce.webp'
+import myflix from '../assets/work/myflix.webp'
 import goldenGoat from '../assets/work/goldengoat.webp'
 import lifeos from '../assets/work/lifeos.webp'
 import wanmai from '../assets/work/wanmai.webp'
+import cavernResort from '../assets/work/cavern-resort.webp'
+import csNorth from '../assets/work/cs-north.webp'
+import myanmarForb from '../assets/work/myanmar-forb.webp'
+import nayEngineering from '../assets/work/nay-engineering.webp'
+import youthStrength from '../assets/work/youth-strength.webp'
+import jenaShipping from '../assets/work/jena-shipping.webp'
+import nineStar from '../assets/work/ninestar.webp'
+import felixiaHub from '../assets/work/felixia-hub.webp'
+
+export type Category = 'fullstack' | 'frontend' | 'design'
+
+export const categoryLabels: Record<Category, string> = {
+  fullstack: 'Full-stack',
+  frontend: 'Frontend',
+  design: 'UI/UX',
+}
 
 export type Project = {
   slug: string
+  /** Drives the Work filters. A project can sit under more than one. */
+  categories: Category[]
   title: string
   year: string
   role: string
@@ -26,19 +44,46 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: 'golden-goat-myanmar',
-    title: 'Golden G.O.A.T Myanmar',
+    slug: 'cavern-resort',
+    categories: ['design', 'frontend'],
+    title: 'Cavern Island Resort',
     year: '2026',
-    role: 'Full-stack build',
+    role: 'UI/UX design + frontend build',
     blurb:
-      'A brand site for a family juice business born at the foot of Mount Popa — natural juices from Myanmar’s volcanic dry zone, no added cane sugar and no preservatives. Trilingual throughout in English, Chinese and Burmese, with a distributor “Join with us” flow and the brand story told through market stalls and trade fairs.',
-    stack: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS'],
-    href: 'https://lucy-oop.github.io/Golden-Goat-Myanmar/',
-    img: goldenGoat,
+      'A resort site for 25 rooms between jungle and sea on Hlaing Gu Island in the Mergui Archipelago — a full-screen photo slider, rooms, sea-cave experiences, dining and getting-here guides, in English, Burmese, Thai and Chinese.',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    href: 'https://lucy-oop.github.io/Cavern-Resort/',
+    img: cavernResort,
     featured: true,
   },
   {
+    slug: 'jena-shipping',
+    categories: ['fullstack', 'design'],
+    title: 'Jena Shipping',
+    year: '2026',
+    role: 'Full-stack build',
+    blurb:
+      'A crewing and maritime-training site for a Yangon agency that places Myanmar seafarers with international shipowners — a multi-step crew application validated with zod, server actions writing to Supabase with a private document bucket, and GSAP/Lenis motion throughout.',
+    stack: ['Next.js 15', 'Tailwind v4', 'Supabase', 'GSAP'],
+    href: 'https://lucy-oop.github.io/Jena-Shipping/',
+    img: jenaShipping,
+    featured: true,
+  },
+  {
+    slug: 'felixia-hub',
+    categories: ['fullstack'],
+    title: 'Felixia Hub',
+    year: '2026',
+    role: 'Full-stack build',
+    blurb:
+      'A content, approval and recruitment workspace for Felixia Recruitment — job orders, a six-stage content pipeline with sign-offs, a month/week/list calendar, ideas, an activity log and team roles, with every permission enforced by row-level security in Supabase. In Burmese, English and Japanese.',
+    stack: ['Next.js', 'TypeScript', 'Supabase', 'PostgreSQL RLS'],
+    href: 'https://felixia-hub.vercel.app/',
+    img: felixiaHub,
+  },
+  {
     slug: 'lifeos',
+    categories: ['fullstack'],
     title: 'LifeOS',
     year: '2026',
     role: 'Solo build — design, frontend + backend',
@@ -50,7 +95,44 @@ export const projects: Project[] = [
     featured: true,
   },
   {
+    slug: 'nine-star',
+    categories: ['design', 'frontend'],
+    title: 'Nine Star',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'An online shop bringing Myanmar pantry staples to Japan — ten categories, product pages and a browser-stored cart that sends a pre-filled order enquiry by email, with all products and prices editable from one data file.',
+    stack: ['HTML', 'CSS', 'JavaScript', 'Python'],
+    href: 'https://lucy-oop.github.io/NineStar/',
+    img: nineStar,
+  },
+  {
+    slug: 'nay-engineering',
+    categories: ['design', 'frontend'],
+    title: 'Nay Engineering',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'A site for a Singapore steel-structure, piping and construction firm — five services, filterable projects with a photo gallery, and a shared header, footer and carousel all built from one data file.',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    href: 'https://lucy-oop.github.io/Nay-Engineering/',
+    img: nayEngineering,
+  },
+  {
+    slug: 'golden-goat-myanmar',
+    categories: ['fullstack'],
+    title: 'Golden G.O.A.T Myanmar',
+    year: '2026',
+    role: 'Full-stack build',
+    blurb:
+      'A brand site for a family juice business born at the foot of Mount Popa — natural juices from Myanmar’s volcanic dry zone, no added cane sugar and no preservatives. Trilingual throughout in English, Chinese and Burmese, with a distributor “Join with us” flow and the brand story told through market stalls and trade fairs.',
+    stack: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS'],
+    href: 'https://lucy-oop.github.io/Golden-Goat-Myanmar/',
+    img: goldenGoat,
+  },
+  {
     slug: 'mingalar-express',
+    categories: ['fullstack'],
     title: 'Mingalar Express',
     year: '2026',
     role: 'Full-stack + geospatial dispatch',
@@ -59,10 +141,46 @@ export const projects: Project[] = [
     stack: ['Next.js 16', 'Supabase', 'PostGIS', 'Leaflet'],
     href: 'https://mingalar-express.vercel.app',
     img: mingalar,
-    featured: true,
+  },
+  {
+    slug: 'myanmar-forb-network',
+    categories: ['design', 'frontend'],
+    title: 'Myanmar FoRB Network',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'A five-page site for a network defending freedom of religion or belief in Myanmar — violation figures that count up from one data file, an inline SVG map, filterable insights, a six-colour page-transition curtain and scroll reveals that all switch off for reduced motion.',
+    stack: ['HTML', 'CSS', 'JavaScript', 'Python'],
+    href: 'https://lucy-oop.github.io/Myanmar-ForB-Network/',
+    img: myanmarForb,
+  },
+  {
+    slug: 'cs-north-engineering',
+    categories: ['design', 'frontend'],
+    title: 'CS North Engineering',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'A site for a Singapore building-management-system specialist — BMS, SCADA and PLC services, a projects showcase, and quote and WhatsApp contact paths.',
+    stack: ['HTML', 'CSS', 'JavaScript', 'Python'],
+    href: 'https://lucy-oop.github.io/CS-North-Engineering/',
+    img: csNorth,
+  },
+  {
+    slug: 'youth-strength-association',
+    categories: ['design', 'frontend'],
+    title: 'Youth Strength Association',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'A bilingual site for a community organisation empowering youth and women in Kyauk Phyu, Rakhine State, since 2014 — education, livelihood and emergency-relief programmes in an autoplaying story slider, with clear ways to support.',
+    stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
+    href: 'https://lucy-oop.github.io/Youthstrengthassociation/',
+    img: youthStrength,
   },
   {
     slug: 'htwe-oo-myanmar',
+    categories: ['design', 'frontend'],
     title: 'Htwe Oo Myanmar',
     year: '2026',
     role: 'UI/UX design + frontend build',
@@ -74,6 +192,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'quickbook',
+    categories: ['fullstack'],
     title: 'Quickbook',
     year: '2026',
     role: 'Full-stack + database design',
@@ -85,6 +204,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'wan-mai',
+    categories: ['design', 'frontend'],
     title: 'WanMai',
     year: '2026',
     role: 'UI/UX design, frontend, network testing + debugging',
@@ -96,6 +216,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'log-vault',
+    categories: ['fullstack'],
     title: 'Log Vault',
     year: '2026',
     role: 'Full-stack build',
@@ -107,6 +228,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'portfolio-ai-assistant',
+    categories: ['frontend'],
     title: 'Portfolio AI Assistant',
     year: '2026',
     role: 'Frontend + API integration',
@@ -118,6 +240,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'nexus-saas',
+    categories: ['design', 'frontend'],
     title: 'Nexus SaaS',
     year: '2025',
     role: 'UI design + build',
@@ -129,6 +252,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'trinkora',
+    categories: ['frontend'],
     title: 'TrinKora Clothing',
     year: '2025',
     role: 'Frontend',
@@ -139,6 +263,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'ecommerce-ts',
+    categories: ['frontend'],
     title: 'Ecommerce (TypeScript)',
     year: '2025',
     role: 'Frontend',
@@ -149,6 +274,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'myflix',
+    categories: ['frontend'],
     title: 'MyFlix',
     year: '2024',
     role: 'Frontend',
@@ -161,3 +287,6 @@ export const projects: Project[] = [
 
 export const featuredProjects = projects.filter((p) => p.featured)
 export const otherProjects = projects.filter((p) => !p.featured)
+
+/** Display order is simply the array order above. */
+export const orderedProjects = projects
