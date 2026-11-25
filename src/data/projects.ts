@@ -43,16 +43,29 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: 'golden-goat-myanmar',
-    categories: ['fullstack'],
-    title: 'Golden G.O.A.T Myanmar',
+    slug: 'cavern-resort',
+    categories: ['design', 'frontend'],
+    title: 'Cavern Island Resort',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'A resort site for 25 rooms between jungle and sea on Hlaing Gu Island in the Mergui Archipelago — a full-screen photo slider, rooms, sea-cave experiences, dining and getting-here guides, in English, Burmese, Thai and Chinese.',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    href: 'https://lucy-oop.github.io/Cavern-Resort/',
+    img: cavernResort,
+    featured: true,
+  },
+  {
+    slug: 'jena-shipping',
+    categories: ['fullstack', 'design'],
+    title: 'Jena Shipping',
     year: '2026',
     role: 'Full-stack build',
     blurb:
-      'A brand site for a family juice business born at the foot of Mount Popa — natural juices from Myanmar’s volcanic dry zone, no added cane sugar and no preservatives. Trilingual throughout in English, Chinese and Burmese, with a distributor “Join with us” flow and the brand story told through market stalls and trade fairs.',
-    stack: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS'],
-    href: 'https://lucy-oop.github.io/Golden-Goat-Myanmar/',
-    img: goldenGoat,
+      'A crewing and maritime-training site for a Yangon agency that places Myanmar seafarers with international shipowners — a multi-step crew application validated with zod, server actions writing to Supabase with a private document bucket, and GSAP/Lenis motion throughout.',
+    stack: ['Next.js 15', 'Tailwind v4', 'Supabase', 'GSAP'],
+    href: 'https://lucy-oop.github.io/Jena-Shipping/',
+    img: jenaShipping,
     featured: true,
   },
   {
@@ -67,55 +80,6 @@ export const projects: Project[] = [
     href: 'https://lifeos-cec7a.web.app/',
     img: lifeos,
     featured: true,
-  },
-  {
-    slug: 'mingalar-express',
-    categories: ['fullstack'],
-    title: 'Mingalar Express',
-    year: '2026',
-    role: 'Full-stack + geospatial dispatch',
-    blurb:
-      'A hyper-local delivery and cash-on-delivery platform for Thingangyun Township, Yangon — row-locked route dispatch, an offline-first rider PWA that queues every state change before it sends, and an append-only COD ledger settled in integer MMK. Bilingual throughout.',
-    stack: ['Next.js 16', 'Supabase', 'PostGIS', 'Leaflet'],
-    href: 'https://mingalar-express.vercel.app',
-    img: mingalar,
-    featured: true,
-  },
-  {
-    slug: 'jena-shipping',
-    categories: ['fullstack', 'design'],
-    title: 'Jena Shipping',
-    year: '2026',
-    role: 'Full-stack build',
-    blurb:
-      'A crewing and maritime-training site for a Yangon agency that places Myanmar seafarers with international shipowners — a multi-step crew application validated with zod, server actions writing to Supabase with a private document bucket, and GSAP/Lenis motion throughout.',
-    stack: ['Next.js 15', 'Tailwind v4', 'Supabase', 'GSAP'],
-    href: 'https://lucy-oop.github.io/Jena-Shipping/',
-    img: jenaShipping,
-  },
-  {
-    slug: 'cavern-resort',
-    categories: ['design', 'frontend'],
-    title: 'Cavern Island Resort',
-    year: '2026',
-    role: 'UI/UX design + frontend build',
-    blurb:
-      'A resort site for 25 rooms between jungle and sea on Hlaing Gu Island in the Mergui Archipelago — a full-screen photo slider, rooms, sea-cave experiences, dining and getting-here guides, in English, Burmese, Thai and Chinese.',
-    stack: ['HTML', 'CSS', 'JavaScript'],
-    href: 'https://lucy-oop.github.io/Cavern-Resort/',
-    img: cavernResort,
-  },
-  {
-    slug: 'myanmar-forb-network',
-    categories: ['design', 'frontend'],
-    title: 'Myanmar FoRB Network',
-    year: '2026',
-    role: 'UI/UX design + frontend build',
-    blurb:
-      'A five-page site for a network defending freedom of religion or belief in Myanmar — violation figures that count up from one data file, an inline SVG map, filterable insights, a six-colour page-transition curtain and scroll reveals that all switch off for reduced motion.',
-    stack: ['HTML', 'CSS', 'JavaScript', 'Python'],
-    href: 'https://lucy-oop.github.io/Myanmar-ForB-Network/',
-    img: myanmarForb,
   },
   {
     slug: 'nine-star',
@@ -140,6 +104,42 @@ export const projects: Project[] = [
     stack: ['HTML', 'CSS', 'JavaScript'],
     href: 'https://lucy-oop.github.io/Nay-Engineering/',
     img: nayEngineering,
+  },
+  {
+    slug: 'golden-goat-myanmar',
+    categories: ['fullstack'],
+    title: 'Golden G.O.A.T Myanmar',
+    year: '2026',
+    role: 'Full-stack build',
+    blurb:
+      'A brand site for a family juice business born at the foot of Mount Popa — natural juices from Myanmar’s volcanic dry zone, no added cane sugar and no preservatives. Trilingual throughout in English, Chinese and Burmese, with a distributor “Join with us” flow and the brand story told through market stalls and trade fairs.',
+    stack: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS'],
+    href: 'https://lucy-oop.github.io/Golden-Goat-Myanmar/',
+    img: goldenGoat,
+  },
+  {
+    slug: 'mingalar-express',
+    categories: ['fullstack'],
+    title: 'Mingalar Express',
+    year: '2026',
+    role: 'Full-stack + geospatial dispatch',
+    blurb:
+      'A hyper-local delivery and cash-on-delivery platform for Thingangyun Township, Yangon — row-locked route dispatch, an offline-first rider PWA that queues every state change before it sends, and an append-only COD ledger settled in integer MMK. Bilingual throughout.',
+    stack: ['Next.js 16', 'Supabase', 'PostGIS', 'Leaflet'],
+    href: 'https://mingalar-express.vercel.app',
+    img: mingalar,
+  },
+  {
+    slug: 'myanmar-forb-network',
+    categories: ['design', 'frontend'],
+    title: 'Myanmar FoRB Network',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'A five-page site for a network defending freedom of religion or belief in Myanmar — violation figures that count up from one data file, an inline SVG map, filterable insights, a six-colour page-transition curtain and scroll reveals that all switch off for reduced motion.',
+    stack: ['HTML', 'CSS', 'JavaScript', 'Python'],
+    href: 'https://lucy-oop.github.io/Myanmar-ForB-Network/',
+    img: myanmarForb,
   },
   {
     slug: 'cs-north-engineering',
@@ -275,8 +275,5 @@ export const projects: Project[] = [
 export const featuredProjects = projects.filter((p) => p.featured)
 export const otherProjects = projects.filter((p) => !p.featured)
 
-/**
- * Featured first: the order the Work row shows, and the order the intro
- * preloader's card ring uses, so the ring unfurls into the same row.
- */
-export const orderedProjects = [...featuredProjects, ...otherProjects]
+/** Display order is simply the array order above. */
+export const orderedProjects = projects

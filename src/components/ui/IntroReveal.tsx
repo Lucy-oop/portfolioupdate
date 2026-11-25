@@ -8,26 +8,18 @@ type IntroRevealProps = {
   delay?: number
   /** "rise": fade and lift in. "mask": slide up from behind an overflow edge. */
   mode?: 'rise' | 'mask'
-  /**
-   * Which intro stage it waits for: 'opening' as the card ring unrolls (the
-   * hero container), or 'done' once the cards have landed (headline, nav).
-   */
-  at?: 'opening' | 'done'
 }
 
 /**
- * Above-the-fold entrance that waits for the first-visit intro to hand over
- * (lib/intro.ts), so the hero isn't spent animating underneath the preloader.
- * Without an intro it simply plays on load.
+ * Above-the-fold entrance, played once on load (lib/intro.ts).
  */
 export default function IntroReveal({
   children,
   className,
   delay = 0,
   mode = 'rise',
-  at = 'done',
 }: IntroRevealProps) {
-  const shown = useIntroReveal(at)
+  const shown = useIntroReveal()
   const style = { transitionDelay: `${delay}s` }
 
   if (mode === 'mask') {

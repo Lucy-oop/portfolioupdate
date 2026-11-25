@@ -31,7 +31,8 @@ export default function About() {
             {/* The hero's halo again, faint and still: it just breathes around the portrait. */}
             <div className="mb-2 flex items-center gap-4">
               <div className="relative size-16 shrink-0">
-                <div className="pointer-events-none absolute -inset-14 opacity-70">
+                {/* Kept to a soft round glow, so it never spills over the card's corner. */}
+                <div className="pointer-events-none absolute -inset-10 overflow-hidden rounded-full opacity-70 [mask-image:radial-gradient(closest-side,#000_60%,transparent)]">
                   <ParticleHalo anchorRef={portraitRef} interactive={false} size={0.3} />
                 </div>
                 <img
@@ -56,7 +57,7 @@ export default function About() {
 
         {/* ---- facts ---- */}
         <Reveal delay={0.08}>
-          <dl className="tile flex h-full flex-col justify-center gap-5 p-7">
+          <dl className="tile flex h-full flex-col gap-5 p-7">
             {facts.map((f) => (
               <div key={f.label}>
                 <dt className="font-mono text-[10.5px] uppercase tracking-wider text-muted">

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { AlertCircle, ArrowUpRight, Check, Mail, Phone } from 'lucide-react'
 import Section from '../ui/Section'
 import Reveal from '../ui/Reveal'
@@ -112,25 +112,33 @@ export default function Contact() {
           </Reveal>
 
           <Reveal delay={0.12} x={-40} y={0} className="flex-1">
-            <div className="tile flex h-full flex-col gap-4 p-6">
-              <h3 className="font-mono text-[10.5px] uppercase tracking-wider text-muted">
-                Elsewhere
-              </h3>
-              <ul className="flex flex-col gap-2.5">
+            <div className="tile flex h-full flex-col p-6">
+              <h3 className="font-mono text-[10.5px] uppercase tracking-wider text-muted">Elsewhere</h3>
+              <ul className="mt-3 divide-y divide-line">
                 {socials.map((s) => (
                   <li key={s.label}>
                     <a
                       href={s.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="group flex items-baseline justify-between gap-3 text-[15px] font-medium transition-colors hover:text-lilac"
+                      className="group flex items-center justify-between gap-3 py-3 text-[17px] font-semibold transition-colors hover:text-lilac"
                     >
-                      {s.label}
-                      <span className="truncate font-mono text-[11px] text-muted">{s.handle}</span>
+                      <span className="transition-transform duration-300 ease-out-soft group-hover:translate-x-1.5">
+                        {s.label}
+                      </span>
+                      <span className="flex items-center gap-2 font-mono text-[11px] font-normal text-muted">
+                        <span className="truncate">{s.handle}</span>
+                        <ArrowUpRight
+                          size={14}
+                          aria-hidden
+                          className="-translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                        />
+                      </span>
                     </a>
                   </li>
                 ))}
               </ul>
+              <LocalTime />
             </div>
           </Reveal>
         </div>
@@ -243,5 +251,29 @@ function Field({ id, label, required, ...rest }: FieldProps) {
         {label} {required && <span aria-hidden>*</span>}
       </label>
     </div>
+  )
+}
+
+/** Lucy's local time, ticking each minute — useful context for anyone writing from elsewhere. */
+function LocalTime() {
+  const [now, setNow] = useState(() => new Date())
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(new Date()), 30_000)
+    return () => window.clearInterval(id)
+  }, [])
+  const time = new Intl.DateTimeFormat('en-GB', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Asia/Bangkok',
+  }).format(now)
+
+  return (
+    <p className="mt-auto flex items-center gap-2 border-t border-line pt-4 font-mono text-[11px] uppercase tracking-wider text-muted">
+      <span className="relative flex size-2">
+        <span className="absolute inline-flex size-full animate-ping rounded-full bg-mint opacity-70" />
+        <span className="relative inline-flex size-2 rounded-full bg-mint" />
+      </span>
+      Bangkok · <span className="tabular-nums text-ink">{time}</span> local time
+    </p>
   )
 }

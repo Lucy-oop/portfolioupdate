@@ -30,11 +30,15 @@ export default function Section({
     <section
       id={id}
       aria-labelledby={titleId}
-      className={cn('scroll-mt-24 px-5 py-16 sm:px-8 sm:py-24', className)}
+      className={cn('scroll-mt-24 px-5 py-14 sm:px-8 sm:py-20', className)}
     >
       <div className="mx-auto max-w-6xl">
-        <Reveal className="eyebrow" y={8}>
-          {index} — {eyebrow}
+        {/* Label, then a hairline running to the edge: every section starts the same way. */}
+        <Reveal className="eyebrow flex items-center gap-4" y={8}>
+          <span className="shrink-0">
+            {index} — {eyebrow}
+          </span>
+          <span aria-hidden className="h-px flex-1 bg-line" />
         </Reveal>
 
         <div className="mt-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-12">

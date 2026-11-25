@@ -1,6 +1,5 @@
 import { useEffect, useRef, type RefObject } from 'react'
 import { useReducedMotion } from '../../lib/useReducedMotion'
-import { useIntroStage } from '../../lib/intro'
 import { cn } from '../../lib/cn'
 
 /**
@@ -18,7 +17,7 @@ import { cn } from '../../lib/cn'
  *  - `interactive={false}` never follows the pointer (ambient use).
  *
  * Canvas 2D, only the dashes inside the ring are drawn; the loop runs only
- * while the canvas is on screen and pauses during the intro. Reduced motion
+ * while the canvas is on screen. Reduced motion
  * draws one still frame around the anchor.
  */
 
@@ -41,13 +40,11 @@ const smooth = (a: number, b: number, x: number) => {
 export default function ParticleHalo({ className, anchorRef, interactive = true, size = 0.21 }: ParticleHaloProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const reduced = useReducedMotion()
-  // Held while the intro covers the page; the halo starts as the ring unrolls.
-  const paused = useIntroStage() === 'playing'
 
   useEffect(() => {
     const canvas = canvasRef.current
     const ctx = canvas?.getContext('2d')
-    if (!canvas || !ctx || paused) return
+    if (!canvas || !ctx) return
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2)
     const followPointer = interactive && window.matchMedia('(pointer: fine)').matches
@@ -204,7 +201,7 @@ export default function ParticleHalo({ className, anchorRef, interactive = true,
       window.removeEventListener('pointermove', onMove)
       document.removeEventListener('pointerleave', onLeave)
     }
-  }, [reduced, paused, interactive, size, anchorRef])
+  }, [reduced, interactive, size, anchorRef])
 
   return <canvas ref={canvasRef} aria-hidden className={cn('pointer-events-none size-full', className)} />
 }

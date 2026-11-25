@@ -46,7 +46,12 @@ export default function Stack() {
       title="What I reach for."
       lede="Everything here is something I have actually shipped with. Pick a category to see where it sits."
     >
-      <div role="group" aria-label="Highlight a category" className="flex flex-wrap gap-1.5">
+      {/* One scrollable line on phones rather than four wrapped rows. */}
+      <div
+        role="group"
+        aria-label="Highlight a category"
+        className="no-scrollbar -mx-5 flex gap-1.5 overflow-x-auto px-5 sm:mx-0 sm:flex-wrap sm:px-0"
+      >
         {stackGroups.map((g) => {
           const on = selected === g.id
           return (
@@ -56,7 +61,7 @@ export default function Stack() {
               aria-pressed={on}
               onClick={() => setSelected(on ? null : g.id)}
               className={cn(
-                'inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-[13px] font-medium transition-colors',
+                'inline-flex shrink-0 items-center gap-2 rounded-full border px-3.5 py-2 text-[13px] font-medium transition-colors',
                 on ? toneClasses[g.tone] : 'border-line bg-card text-muted hover:text-ink'
               )}
             >

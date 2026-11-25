@@ -6,7 +6,6 @@ import Nav from './components/layout/Nav'
 import Footer from './components/layout/Footer'
 import SmoothScroll from './components/layout/SmoothScroll'
 import PageTransition from './components/layout/PageTransition'
-import Preloader from './components/layout/Preloader'
 import CursorLabel from './components/fx/CursorLabel'
 
 import Home from './routes/Home'
@@ -28,8 +27,6 @@ export default function App() {
 
   return (
     <SmoothScroll>
-      {/* Rendered straight into #root: it marks its siblings inert while it plays. */}
-      <Preloader />
       <CursorLabel />
       <a
         href="#main"

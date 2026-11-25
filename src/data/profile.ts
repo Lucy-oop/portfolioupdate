@@ -1,7 +1,7 @@
 export const profile = {
   fullName: 'Yee Mon Thant',
   preferredName: 'Lucy',
-  role: 'Junior Fullstack Developer',
+  role: 'Product Engineer',
   location: 'Bangkok, Thailand',
   timezone: 'GMT+7',
   email: 'tomon5609@gmail.com',

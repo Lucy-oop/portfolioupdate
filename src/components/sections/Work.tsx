@@ -41,6 +41,7 @@ export default function Work() {
     <Section
       id="work"
       index="01"
+      className="pb-6 sm:pb-8"
       eyebrow="Selected work"
       title="Things I built and shipped."
       lede={`${orderedProjects.length} projects, all live. Filter by discipline, or switch to a grid or list to scan them all at once.`}
@@ -70,7 +71,7 @@ export default function Work() {
                 )}
               >
                 {f.label}
-                <span className="ml-1.5 font-mono text-[10.5px] opacity-60">{count}</span>
+                <span className="ml-1.5 font-mono text-[10.5px] opacity-80">{count}</span>
               </button>
             )
           })}
@@ -129,8 +130,12 @@ const gutterOf = (el: HTMLElement) => parseFloat(getComputedStyle(el).paddingLef
  * arc are only transform offsets from that slot; once the row is reached the
  * transforms are cleared and it scrolls, drags and snaps as usual.
  *
+ * Once flat, the row slides right to left on its own, looping seamlessly
+ * over a second, aria-hidden copy of the cards. It pauses while you hover,
+ * focus, drag or use the arrows, and picks up again a moment later.
+ *
  * The pin is CSS sticky inside a taller wrapper, so it rides along with Lenis
- * and native scrolling alike. Reduced motion: just the row, no pin.
+ * and native scrolling alike. Reduced motion: just the row, no pin, no slide.
  * ----------------------------------------------------------------- */
 
 const STEPS = ['Ring', 'Arc', 'Row'] as const
@@ -155,6 +160,10 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
   const pinRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
+  const dupRefs = useRef<(HTMLDivElement | null)[]>([])
+  const contentRef = useRef<HTMLDivElement>(null)
+  const pauseUntil = useRef(0)
+  const hovered = useRef(false)
   const [active, setActive] = useState(0)
   const [step, setStep] = useState(reduced ? 2 : 0)
 
@@ -183,9 +192,9 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
       const rect = pin.getBoundingClientRect()
       const travel = Math.max(1, rect.height - window.innerHeight)
       const p = clamp01(-rect.top / travel)
-      // 0–0.15 ring holds · 0.15–0.5 ring → arc · 0.5–0.82 arc → row · then row holds
-      const a = ease(clamp01((p - 0.15) / 0.35))
-      const f = ease(clamp01((p - 0.5) / 0.32))
+      // 0–0.12 ring holds · 0.12–0.45 ring → arc · 0.45–0.8 arc → row · then row holds
+      const a = ease(clamp01((p - 0.12) / 0.33))
+      const f = ease(clamp01((p - 0.45) / 0.35))
       const nextStep = f >= 1 ? 2 : a >= 0.5 ? 1 : 0
       if (nextStep !== shownStep) {
         shownStep = nextStep
@@ -276,6 +285,92 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
 
   const settled = step === 2
 
+  /** Hold the auto-slide for a moment after any manual interaction. */
+  const holdSlide = (ms = 2500) => {
+    pauseUntil.current = performance.now() + ms
+  }
+
+  // ---- auto-slide, right to left, once the row has settled ----
+  useEffect(() => {
+    const track = trackRef.current
+    if (!track || !settled || reduced) return
+
+    let pos = track.scrollLeft
+    let last = 0
+    let frame = 0
+    let wasHeld = false
+    const tick = (now: number) => {
+      frame = requestAnimationFrame(tick)
+      const dt = last ? Math.min(now - last, 50) / 1000 : 0
+      last = now
+      const held = hovered.current || now < pauseUntil.current || document.hidden
+      if (held) {
+        wasHeld = true
+        return
+      }
+      // Pick up from wherever the visitor left it.
+      if (wasHeld) {
+        pos = track.scrollLeft
+        wasHeld = false
+      }
+      const first = cardRefs.current[0]
+      const dup = dupRefs.current[0]
+      if (!first || !dup) return
+      const span = dup.offsetLeft - first.offsetLeft // one full set of cards
+      pos += 40 * dt // px/s; kept as a float, since scrollLeft rounds
+      if (pos >= span) pos -= span
+      track.scrollLeft = pos
+    }
+
+    const hold = () => holdSlide()
+    const enter = (e: PointerEvent) => {
+      if (e.pointerType === 'mouse') hovered.current = true
+    }
+    const leave = () => {
+      hovered.current = false
+      holdSlide(1200)
+    }
+    track.addEventListener('pointerenter', enter)
+    track.addEventListener('pointerleave', leave)
+    track.addEventListener('pointerdown', hold)
+    track.addEventListener('wheel', hold, { passive: true })
+    track.addEventListener('touchstart', hold, { passive: true })
+    track.addEventListener('focusin', hold)
+    frame = requestAnimationFrame(tick)
+    return () => {
+      cancelAnimationFrame(frame)
+      hovered.current = false
+      track.removeEventListener('pointerenter', enter)
+      track.removeEventListener('pointerleave', leave)
+      track.removeEventListener('pointerdown', hold)
+      track.removeEventListener('wheel', hold)
+      track.removeEventListener('touchstart', hold)
+      track.removeEventListener('focusin', hold)
+    }
+  }, [settled, reduced, projects])
+
+  // ---- no empty half-screen after the pin ----
+  // The sticky stage is a full screen tall with the row centred in it, so when
+  // the pin lets go, the space under the row would follow. Pull the next
+  // section up by exactly that much.
+  useEffect(() => {
+    const pin = pinRef.current
+    const content = contentRef.current
+    if (!pin || !content || reduced) return
+    const fit = () => {
+      const empty = Math.max(0, (window.innerHeight - content.offsetHeight) / 2)
+      pin.style.marginBottom = `${-empty}px`
+    }
+    fit()
+    const ro = new ResizeObserver(fit)
+    ro.observe(content)
+    window.addEventListener('resize', fit)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', fit)
+    }
+  }, [reduced])
+
   // Which card sits on the leading edge, for the counter.
   useEffect(() => {
     const track = trackRef.current
@@ -284,7 +379,7 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
       const edge = track.scrollLeft + gutterOf(track)
       let best = 0
       let bestD = Infinity
-      cardRefs.current.forEach((c, i) => {
+      ;[...cardRefs.current, ...dupRefs.current].forEach((c, i) => {
         if (!c) return
         const d = Math.abs(c.offsetLeft - edge)
         if (d < bestD) {
@@ -292,31 +387,38 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
           best = i
         }
       })
-      setActive(best)
+      setActive(best % projects.length)
     }
     onScroll()
     track.addEventListener('scroll', onScroll, { passive: true })
     return () => track.removeEventListener('scroll', onScroll)
   }, [projects])
 
+  /** Step one card either way; the row loops, so there is no end. */
   const go = (dir: 1 | -1) => {
-    const next = Math.min(projects.length - 1, Math.max(0, active + dir))
-    const card = cardRefs.current[next]
     const track = trackRef.current
-    if (!card || !track) return
-    track.scrollTo({ left: card.offsetLeft - gutterOf(track), behavior: reduced ? 'auto' : 'smooth' })
+    const first = cardRefs.current[0]
+    const dup = dupRefs.current[0]
+    if (!track || !first || !dup) return
+    holdSlide()
+    const span = dup.offsetLeft - first.offsetLeft
+    // At the very start, jump to the identical spot one set along so "back" works.
+    if (dir < 0 && track.scrollLeft < 4) track.scrollLeft += span
+    const step = first.offsetWidth + 20
+    track.scrollBy({ left: dir * step, behavior: reduced ? 'auto' : 'smooth' })
   }
 
   useDragScroll(trackRef)
 
   const stage = (
     <div className={cn('flex flex-col', !reduced && 'sticky top-0 h-svh justify-center')}>
+      <div ref={contentRef}>
       {!reduced && (
         <ol aria-hidden className="mb-2 flex items-center gap-3 px-(--gutter) font-mono text-[11px] uppercase tracking-wider">
           {STEPS.map((s, i) => (
             <li key={s} className="flex items-center gap-3">
               {i > 0 && <span className="h-px w-8 bg-line" />}
-              <span className={cn('transition-colors duration-300', i === step ? 'text-lilac' : 'text-muted/60')}>
+              <span className={cn('transition-colors duration-300', i === step ? 'text-lilac' : 'text-muted')}>
                 0{i + 1} {s}
               </span>
             </li>
@@ -330,9 +432,9 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
         aria-label="Projects"
         role="region"
         className={cn(
-          'no-scrollbar relative flex gap-5 py-14 [perspective-origin:50%_45%] [perspective:1600px]',
-          // Snap and scroll only once flat: mid-ring, snapping would drag the row sideways.
-          settled ? 'snap-x snap-mandatory overflow-x-auto' : 'overflow-x-hidden',
+          'no-scrollbar relative flex gap-5 py-10 [perspective-origin:50%_45%] [perspective:1600px]',
+          // Scrollable only once flat. No snap: it would fight the auto-slide.
+          settled ? 'overflow-x-auto' : 'overflow-x-hidden',
           '[--card-w:clamp(250px,74vw,340px)] scroll-px-(--gutter) px-(--gutter)'
         )}
       >
@@ -343,6 +445,25 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
               cardRefs.current[i] = el
             }}
             className="w-(--card-w) shrink-0 snap-start will-change-transform"
+          >
+            <TiltCard>
+              <ProjectCard project={p} index={i} />
+            </TiltCard>
+          </div>
+        ))}
+        {/* The loop's second set: hidden from assistive tech and the tab order. */}
+        {projects.map((p, i) => (
+          <div
+            key={`${p.slug}-loop`}
+            ref={(el) => {
+              dupRefs.current[i] = el
+            }}
+            aria-hidden
+            inert
+            className={cn(
+              'w-(--card-w) shrink-0 transition-opacity duration-300',
+              settled ? 'opacity-100' : 'opacity-0'
+            )}
           >
             <TiltCard>
               <ProjectCard project={p} index={i} />
@@ -362,13 +483,14 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
           {String(projects.length).padStart(2, '0')}
         </p>
         <div className="flex gap-2">
-          <CarouselButton label="Previous project" onClick={() => go(-1)} disabled={active === 0}>
+          <CarouselButton label="Previous project" onClick={() => go(-1)} disabled={false}>
             <ArrowLeft size={16} aria-hidden />
           </CarouselButton>
-          <CarouselButton label="Next project" onClick={() => go(1)} disabled={active === projects.length - 1}>
+          <CarouselButton label="Next project" onClick={() => go(1)} disabled={false}>
             <ArrowRight size={16} aria-hidden />
           </CarouselButton>
         </div>
+      </div>
       </div>
     </div>
   )
@@ -380,7 +502,7 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
       ref={pinRef}
       className={cn(
         'relative mx-[calc(50%-50vw)] [--pad:1.25rem] [--gutter:max(var(--pad),calc((100vw-72rem)/2))] sm:[--pad:2rem]',
-        !reduced && 'h-[280svh]'
+        !reduced && 'h-[230svh]'
       )}
     >
       {stage}
