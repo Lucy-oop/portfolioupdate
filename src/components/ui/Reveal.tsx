@@ -7,6 +7,8 @@ type RevealProps = {
   className?: string
   delay?: number
   y?: number
+  /** Horizontal start offset in px, for slide-ins from the side. */
+  x?: number
   as?: ElementType
 }
 
@@ -22,6 +24,7 @@ export default function Reveal({
   className,
   delay = 0,
   y = 18,
+  x = 0,
   as: Tag = 'div',
 }: RevealProps) {
   const { ref, inView, reduced } = useInViewOnce<HTMLDivElement>()
@@ -36,7 +39,7 @@ export default function Reveal({
       className={cn('transition-[opacity,transform] duration-600 ease-out-soft', className)}
       style={{
         opacity: inView ? 1 : 0,
-        transform: inView ? 'none' : `translateY(${y}px)`,
+        transform: inView ? 'none' : `translate(${x}px, ${y}px)`,
         transitionDelay: `${delay}s`,
       }}
     >

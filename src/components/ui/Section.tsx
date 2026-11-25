@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import Reveal from './Reveal'
+import { useInViewOnce } from '../../lib/useInViewOnce'
 import { cn } from '../../lib/cn'
 
 type SectionProps = {
@@ -37,14 +38,7 @@ export default function Section({
         </Reveal>
 
         <div className="mt-4 flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-12">
-          <Reveal delay={0.05}>
-            <h2
-              id={titleId}
-              className="max-w-2xl text-balance text-3xl font-semibold leading-[1.08] sm:text-4xl md:text-5xl"
-            >
-              {title}
-            </h2>
-          </Reveal>
+          <MaskTitle id={titleId}>{title}</MaskTitle>
 
           {lede && (
             <Reveal delay={0.12} className="max-w-md">
@@ -56,5 +50,24 @@ export default function Section({
         <div className="mt-10 sm:mt-14">{children}</div>
       </div>
     </section>
+  )
+}
+
+/** The heading slides up through an overflow mask the first time it scrolls into view. */
+function MaskTitle({ id, children }: { id: string; children: ReactNode }) {
+  const { ref, inView, reduced } = useInViewOnce<HTMLHeadingElement>()
+  return (
+    <h2
+      ref={ref}
+      id={id}
+      className="max-w-2xl overflow-hidden pb-[0.12em] text-balance text-3xl font-semibold leading-[1.08] sm:text-4xl md:text-5xl"
+    >
+      <span
+        className="block transition-transform duration-900 ease-out-soft"
+        style={{ transform: inView || reduced ? 'none' : 'translateY(105%)' }}
+      >
+        {children}
+      </span>
+    </h2>
   )
 }

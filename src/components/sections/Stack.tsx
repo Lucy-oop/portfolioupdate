@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Sparkles } from 'lucide-react'
 import Section from '../ui/Section'
 import Reveal from '../ui/Reveal'
 import { learningNext, stackGroups, type StackGroup } from '../../data/stack'
 import { cn } from '../../lib/cn'
+import { useScrollFrame } from '../../lib/useScrollFrame'
 
 const toneClasses: Record<StackGroup['tone'], string> = {
   lilac: 'border-lilac/40 bg-lilac-soft text-lilac',
@@ -25,6 +26,17 @@ const rows = [chips.slice(0, half), chips.slice(half)]
  */
 export default function Stack() {
   const [selected, setSelected] = useState<string | null>(null)
+  const rowsRef = useRef<HTMLDivElement>(null)
+
+  // On top of their drift, the rows slide with the scroll — the first one
+  // left, the second right — so scrolling the page visibly moves them.
+  useScrollFrame(rowsRef, (el) => {
+    const r = el.getBoundingClientRect()
+    const shift = (r.top + r.height / 2 - window.innerHeight / 2) * 0.35
+    el.querySelectorAll<HTMLElement>('[data-scroll-shift]').forEach((row, i) => {
+      row.style.transform = `translateX(${i % 2 ? -shift : shift}px)`
+    })
+  })
 
   return (
     <Section
@@ -56,9 +68,11 @@ export default function Stack() {
       </div>
 
       {/* Visual rows: decorative copies of the list below. */}
-      <div aria-hidden className="mx-[calc(50%-50vw)] mt-8 flex flex-col gap-3">
+      <div ref={rowsRef} aria-hidden className="mx-[calc(50%-50vw)] mt-8 flex flex-col gap-3 overflow-hidden">
         {rows.map((row, r) => (
           <div key={r} className="marquee no-scrollbar overflow-hidden motion-reduce:overflow-x-auto">
+            {/* Starts a little off-screen left, so the scroll shift never exposes an empty edge. */}
+            <div data-scroll-shift className="-ml-[25vw] w-max">
             <div className={cn('marquee-track flex w-max', r === 1 && 'marquee-reverse')}>
               {[...row, ...row].map(({ item, group }, i) => {
                 const dim = selected && selected !== group.id
@@ -77,6 +91,7 @@ export default function Stack() {
                   </span>
                 )
               })}
+            </div>
             </div>
           </div>
         ))}

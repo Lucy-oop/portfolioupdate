@@ -116,11 +116,165 @@ export default function Work() {
 
 const gutterOf = (el: HTMLElement) => parseFloat(getComputedStyle(el).paddingLeft) || 0
 
+/* -----------------------------------------------------------------
+ * 3D CARD RING SHOWCASE
+ * As you scroll through the section it changes step by step:
+ *
+ *   01 Ring  the cards spin on a tilted 3D ring
+ *   02 Arc   the ring unrolls into a wide arc that leans toward you
+ *   03 Row   the arc flattens into the browsable row below
+ *
+ * Every card is laid out in the normal scroll-snap row — its real, final
+ * position, so the row is accessible and works without JS. The ring and the
+ * arc are only transform offsets from that slot; once the row is reached the
+ * transforms are cleared and it scrolls, drags and snaps as usual.
+ *
+ * The pin is CSS sticky inside a taller wrapper, so it rides along with Lenis
+ * and native scrolling alike. Reduced motion: just the row, no pin.
+ * ----------------------------------------------------------------- */
+
+const STEPS = ['Ring', 'Arc', 'Row'] as const
+const TILT = 0.2 // radians the ring leans toward the viewer
+const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2)
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v))
+const wrap = (a: number) => Math.atan2(Math.sin(a), Math.cos(a))
+const lerp = (a: number, b: number, t: number) => a + (b - a) * t
+
+type Pose = { x: number; y: number; z: number; rot: number; scale: number; opacity: number }
+const blend = (a: Pose, b: Pose, t: number): Pose => ({
+  x: lerp(a.x, b.x, t),
+  y: lerp(a.y, b.y, t),
+  z: lerp(a.z, b.z, t),
+  rot: lerp(a.rot, b.rot, t),
+  scale: lerp(a.scale, b.scale, t),
+  opacity: lerp(a.opacity, b.opacity, t),
+})
+
 function ProjectCarousel({ projects }: { projects: Project[] }) {
   const reduced = useReducedMotion()
+  const pinRef = useRef<HTMLDivElement>(null)
   const trackRef = useRef<HTMLDivElement>(null)
   const cardRefs = useRef<(HTMLDivElement | null)[]>([])
   const [active, setActive] = useState(0)
+  const [step, setStep] = useState(reduced ? 2 : 0)
+
+  // ---- the scroll-driven morph ----
+  useEffect(() => {
+    if (reduced) {
+      setStep(2)
+      return
+    }
+    const pin = pinRef.current
+    const track = trackRef.current
+    if (!pin || !track) return
+
+    let spin = 0
+    let last = 0
+    let frame = 0
+    let running = false
+    let shownStep = -1
+    let wasSettled = false
+
+    const tick = (now: number) => {
+      frame = requestAnimationFrame(tick)
+      const dt = last ? Math.min(now - last, 64) / 1000 : 0
+      last = now
+
+      const rect = pin.getBoundingClientRect()
+      const travel = Math.max(1, rect.height - window.innerHeight)
+      const p = clamp01(-rect.top / travel)
+      // 0–0.15 ring holds · 0.15–0.5 ring → arc · 0.5–0.82 arc → row · then row holds
+      const a = ease(clamp01((p - 0.15) / 0.35))
+      const f = ease(clamp01((p - 0.5) / 0.32))
+      const nextStep = f >= 1 ? 2 : a >= 0.5 ? 1 : 0
+      if (nextStep !== shownStep) {
+        shownStep = nextStep
+        setStep(nextStep)
+      }
+
+      const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[]
+      const n = cards.length
+      if (!n) return
+
+      const settled = f >= 1
+      if (settled) {
+        if (!wasSettled) {
+          wasSettled = true
+          for (const c of cards) {
+            c.style.transform = ''
+            c.style.opacity = ''
+            c.style.zIndex = ''
+          }
+        }
+        return
+      }
+      wasSettled = false
+      if (track.scrollLeft) track.scrollLeft = 0
+
+      if (a === 0) spin += dt * 0.35 // only the closed ring turns
+
+      const cw = track.clientWidth
+      const cardW = cards[0].offsetWidth
+      const radius = (n * (cardW + 28)) / (2 * Math.PI)
+      const ringScale = Math.min(1, (cw * (cw < 640 ? 2 : 1.05)) / (2 * radius + cardW))
+      const spread = Math.min(cw * 0.94, n * cardW * 0.62)
+      const arcScale = Math.min(0.85, (spread / n / cardW) * 1.6)
+
+      cards.forEach((c, i) => {
+        const slotX = c.offsetLeft + c.offsetWidth / 2 // from the track's left edge
+        const theta = wrap((i / n) * Math.PI * 2 + spin)
+        const z = radius * Math.cos(theta) - radius // 0 front, -2r back
+        const depth = (Math.cos(theta) + 1) / 2
+
+        const ring: Pose = {
+          x: cw / 2 + ringScale * radius * Math.sin(theta),
+          y: ringScale * z * Math.sin(TILT),
+          z: ringScale * z * Math.cos(TILT),
+          rot: theta,
+          scale: ringScale,
+          opacity: 0.35 + 0.65 * depth,
+        }
+        const u = n > 1 ? (i - (n - 1) / 2) / ((n - 1) / 2) : 0
+        const arc: Pose = {
+          x: cw / 2 + (u * spread) / 2,
+          y: u * u * 70,
+          z: 160 - u * u * 320,
+          rot: -u * 0.55,
+          scale: arcScale,
+          opacity: 1,
+        }
+        const row: Pose = { x: slotX, y: 0, z: 0, rot: 0, scale: 1, opacity: 1 }
+
+        const pose = blend(blend(ring, arc, a), row, f)
+        c.style.transform =
+          `translate3d(${pose.x - slotX}px, ${pose.y}px, ${pose.z}px) ` +
+          `rotateY(${pose.rot}rad) scale(${pose.scale})`
+        c.style.opacity = String(pose.opacity)
+        c.style.zIndex = String(Math.round(1000 + z * (1 - a)))
+      })
+    }
+
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !running) {
+          running = true
+          last = 0
+          frame = requestAnimationFrame(tick)
+        } else if (!entry.isIntersecting && running) {
+          running = false
+          cancelAnimationFrame(frame)
+        }
+      },
+      { rootMargin: '200px 0px' }
+    )
+    io.observe(pin)
+    return () => {
+      io.disconnect()
+      cancelAnimationFrame(frame)
+    }
+  }, [reduced, projects])
+
+  const settled = step === 2
 
   // Which card sits on the leading edge, for the counter.
   useEffect(() => {
@@ -155,16 +309,30 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
 
   useDragScroll(trackRef)
 
-  return (
-    // Full-bleed, with the row and counter starting on the section's content edge.
-    <div className="mx-[calc(50%-50vw)] [--pad:1.25rem] [--gutter:max(var(--pad),calc((100vw-72rem)/2))] sm:[--pad:2rem]">
+  const stage = (
+    <div className={cn('flex flex-col', !reduced && 'sticky top-0 h-svh justify-center')}>
+      {!reduced && (
+        <ol aria-hidden className="mb-2 flex items-center gap-3 px-(--gutter) font-mono text-[11px] uppercase tracking-wider">
+          {STEPS.map((s, i) => (
+            <li key={s} className="flex items-center gap-3">
+              {i > 0 && <span className="h-px w-8 bg-line" />}
+              <span className={cn('transition-colors duration-300', i === step ? 'text-lilac' : 'text-muted/60')}>
+                0{i + 1} {s}
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
+
       <div
         ref={trackRef}
         data-lenis-prevent-horizontal
         aria-label="Projects"
         role="region"
         className={cn(
-          'no-scrollbar relative flex snap-x snap-mandatory gap-5 overflow-x-auto py-3',
+          'no-scrollbar relative flex gap-5 py-14 [perspective-origin:50%_45%] [perspective:1600px]',
+          // Snap and scroll only once flat: mid-ring, snapping would drag the row sideways.
+          settled ? 'snap-x snap-mandatory overflow-x-auto' : 'overflow-x-hidden',
           '[--card-w:clamp(250px,74vw,340px)] scroll-px-(--gutter) px-(--gutter)'
         )}
       >
@@ -174,7 +342,7 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
             ref={(el) => {
               cardRefs.current[i] = el
             }}
-            className="w-(--card-w) shrink-0 snap-start"
+            className="w-(--card-w) shrink-0 snap-start will-change-transform"
           >
             <TiltCard>
               <ProjectCard project={p} index={i} />
@@ -183,7 +351,12 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
         ))}
       </div>
 
-      <div className="mt-4 flex items-center justify-between gap-4 px-(--gutter)">
+      <div
+        className={cn(
+          'flex items-center justify-between gap-4 px-(--gutter) transition-opacity duration-500',
+          settled ? 'opacity-100' : 'pointer-events-none opacity-0'
+        )}
+      >
         <p className="font-mono text-[11px] tracking-wider text-muted" aria-live="polite">
           <span className="text-ink">{String(active + 1).padStart(2, '0')}</span> /{' '}
           {String(projects.length).padStart(2, '0')}
@@ -197,6 +370,20 @@ function ProjectCarousel({ projects }: { projects: Project[] }) {
           </CarouselButton>
         </div>
       </div>
+    </div>
+  )
+
+  // Full-bleed, with the row starting on the section's content edge; tall
+  // enough to give the three steps about two screens of scroll.
+  return (
+    <div
+      ref={pinRef}
+      className={cn(
+        'relative mx-[calc(50%-50vw)] [--pad:1.25rem] [--gutter:max(var(--pad),calc((100vw-72rem)/2))] sm:[--pad:2rem]',
+        !reduced && 'h-[280svh]'
+      )}
+    >
+      {stage}
     </div>
   )
 }

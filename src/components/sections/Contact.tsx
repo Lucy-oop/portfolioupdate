@@ -75,7 +75,7 @@ export default function Contact() {
       <div className="grid grid-cols-1 gap-3.5 sm:gap-4 lg:grid-cols-5">
         {/* ---- direct details ---- */}
         <div className="flex flex-col gap-3.5 sm:gap-4 lg:col-span-2">
-          <Reveal>
+          <Reveal x={-40} y={0}>
             <a
               href={`mailto:${profile.email}`}
               className="tile tile-hover group flex items-center gap-4 p-6"
@@ -93,7 +93,7 @@ export default function Contact() {
             </a>
           </Reveal>
 
-          <Reveal delay={0.06}>
+          <Reveal delay={0.06} x={-40} y={0}>
             <a
               href={`tel:${profile.phone.replace(/\s/g, '')}`}
               className="tile tile-hover group flex items-center gap-4 p-6"
@@ -111,7 +111,7 @@ export default function Contact() {
             </a>
           </Reveal>
 
-          <Reveal delay={0.12} className="flex-1">
+          <Reveal delay={0.12} x={-40} y={0} className="flex-1">
             <div className="tile flex h-full flex-col gap-4 p-6">
               <h3 className="font-mono text-[10.5px] uppercase tracking-wider text-muted">
                 Elsewhere
@@ -136,7 +136,7 @@ export default function Contact() {
         </div>
 
         {/* ---- form ---- */}
-        <Reveal delay={0.1} className="lg:col-span-3">
+        <Reveal delay={0.1} x={40} y={0} className="lg:col-span-3">
           <form onSubmit={onSubmit} className="tile flex h-full flex-col gap-4 p-7 sm:p-9">
             {/* Honeypot — hidden from sight and from screen readers. */}
             <input

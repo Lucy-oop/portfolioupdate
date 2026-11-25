@@ -195,6 +195,14 @@
     animation-play-state: paused;
   }
 
+  /* Footer wordmark: the breaking letters turn lilac once they lift off. */
+  .kinetic-break {
+    transition: color 0.4s var(--ease-out-soft);
+  }
+  .kinetic-word[data-broken] .kinetic-break {
+    color: var(--color-lilac);
+  }
+
   /* Hero strip: a slow endless drift, held until the intro hands over. */
   .strip-track {
     animation: strip-drift 70s linear infinite;

@@ -8,6 +8,7 @@ import { profile } from '../../data/profile'
 import { useIntroReveal } from '../../lib/intro'
 import { useCountUp } from '../../lib/useCountUp'
 import { useMagnetic } from '../../lib/useMagnetic'
+import { useScrollFrame } from '../../lib/useScrollFrame'
 
 /**
  * The hero: a large two-line headline on the left, the portrait on the right
@@ -24,9 +25,24 @@ import { useMagnetic } from '../../lib/useMagnetic'
 export default function Hero() {
   const portraitRef = useRef<HTMLDivElement>(null)
   const viewWork = useMagnetic<HTMLAnchorElement>(0.25)
+  const sectionRef = useRef<HTMLElement>(null)
+  const wordsRef = useRef<HTMLDivElement>(null)
+  const artRef = useRef<HTMLDivElement>(null)
+
+  // Scroll parallax as you leave the hero: the words lift and fade faster than
+  // the portrait, which drifts and shrinks a touch — depth without a 3D scene.
+  useScrollFrame(sectionRef, (section) => {
+    const p = Math.min(1, Math.max(0, window.scrollY / section.offsetHeight))
+    if (wordsRef.current) {
+      wordsRef.current.style.transform = `translateY(${-p * 90}px)`
+      wordsRef.current.style.opacity = String(1 - p * 0.9)
+    }
+    if (artRef.current) artRef.current.style.transform = `translateY(${-p * 40}px) scale(${1 - p * 0.06})`
+  })
 
   return (
     <section
+      ref={sectionRef}
       aria-labelledby="hero-title"
       className="relative isolate overflow-hidden px-5 pb-8 pt-28 sm:px-8 sm:pt-32"
     >
@@ -34,7 +50,7 @@ export default function Hero() {
 
       <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
         {/* ---- words ---- */}
-        <div className="lg:col-span-7">
+        <div ref={wordsRef} className="lg:col-span-7">
           <IntroReveal at="opening" className="flex flex-wrap items-center gap-x-4 gap-y-2">
             <span className="inline-flex items-center gap-2 rounded-full border border-line bg-card px-3 py-1.5 text-[12.5px] font-medium">
               <span className="relative flex size-2">
@@ -120,25 +136,27 @@ export default function Hero() {
 
         {/* ---- portrait: the halo's resting place ---- */}
         <IntroReveal at="opening" delay={0.08} className="lg:col-span-5">
-          <div
-            ref={portraitRef}
-            className="relative mx-auto aspect-4/5 w-full max-w-[360px] overflow-hidden rounded-[2rem] border border-line shadow-bento-lift"
-          >
-            <img
-              src={portrait}
-              alt={`Illustrated portrait of ${profile.fullName}`}
-              className="absolute inset-0 size-full object-cover object-top"
-            />
+          <div ref={artRef}>
             <div
-              aria-hidden
-              className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/80 via-black/35 to-transparent"
-            />
-            <div className="absolute inset-x-0 bottom-0 p-5 text-white">
-              <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] opacity-85">
-                {profile.preferredName}
-              </p>
-              <p className="mt-0.5 text-[15px] font-semibold leading-snug">{profile.fullName}</p>
-              <p className="mt-0.5 text-[12.5px] opacity-80">{profile.role}</p>
+              ref={portraitRef}
+              className="relative mx-auto aspect-4/5 w-full max-w-[360px] overflow-hidden rounded-[2rem] border border-line shadow-bento-lift"
+            >
+              <img
+                src={portrait}
+                alt={`Illustrated portrait of ${profile.fullName}`}
+                className="absolute inset-0 size-full object-cover object-top"
+              />
+              <div
+                aria-hidden
+                className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-black/80 via-black/35 to-transparent"
+              />
+              <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+                <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] opacity-85">
+                  {profile.preferredName}
+                </p>
+                <p className="mt-0.5 text-[15px] font-semibold leading-snug">{profile.fullName}</p>
+                <p className="mt-0.5 text-[12.5px] opacity-80">{profile.role}</p>
+              </div>
             </div>
           </div>
         </IntroReveal>

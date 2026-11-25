@@ -3,28 +3,42 @@ import { useReducedMotion } from '../../lib/useReducedMotion'
 import { cn } from '../../lib/cn'
 
 /**
- * An oversized wordmark that fills its container's width exactly, whose last
- * couple of letters lift off the baseline and tilt as it scrolls into view —
- * scrubbed by scroll, and carried by springs, so they overshoot a little,
- * wobble and settle, and drop back down if you scroll away again.
+ * SCROLL-LINKED FLOATING LETTERS
+ * =================================================================
+ * An oversized wordmark that fills its container's width exactly. It sits
+ * perfectly still — every letter on the baseline, one colour — until the
+ * footer actually arrives. Then, scrubbed by scroll:
+ *
+ *  - per-character drift: each letter floats against the scroll on its own
+ *    spring, later letters drifting further, so moving the page sends a
+ *    ripple along the word that settles when you stop;
+ *  - baseline break: over the last stretch of the page the final letters
+ *    lift off the baseline, tilt, and turn lilac — on under-damped springs,
+ *    so they overshoot and settle, and drop back if you scroll up.
  *
  * Decorative (aria-hidden): the name is also written out in plain text
- * nearby. Reduced motion shows the letters at rest, no lift.
+ * nearby. Reduced motion: the letters stay at rest.
  */
 
 type KineticWordmarkProps = {
   text: string
-  /** How many letters at the end take off. */
+  /** How many letters at the end break off the baseline. */
   lifting?: number
   className?: string
 }
 
-/** Per lifting letter, from the last one backwards: rise (em) and tilt (deg). */
+/** Per breaking letter, from the last one backwards: rise (em) and tilt (deg). */
 const POSES = [
   { rise: 0.12, tilt: 7 },
   { rise: 0.06, tilt: -3.5 },
   { rise: 0.03, tilt: 2 },
 ]
+
+const clamp = (v: number, a: number, b: number) => Math.min(b, Math.max(a, v))
+const smooth = (a: number, b: number, x: number) => {
+  const t = clamp((x - a) / (b - a), 0, 1)
+  return t * t * (3 - 2 * t)
+}
 
 export default function KineticWordmark({ text, lifting = 2, className }: KineticWordmarkProps) {
   const boxRef = useRef<HTMLDivElement>(null)
@@ -53,11 +67,16 @@ export default function KineticWordmark({ text, lifting = 2, className }: Kineti
 
   useEffect(() => {
     const box = boxRef.current
-    if (!box || reduced) return
+    const line = textRef.current
+    if (!box || !line || reduced) return
+    const footer = box.closest('footer') ?? box
 
-    const springs = Array.from({ length: lifting }, () => ({ y: 0, vy: 0, r: 0, vr: 0 }))
+    const n = chars.length
+    const springs = chars.map(() => ({ y: 0, vy: 0, r: 0, vr: 0 }))
     let frame = 0
     let last = 0
+    let lastScroll = window.scrollY
+    let velocity = 0
     let running = false
 
     const tick = (now: number) => {
@@ -65,27 +84,43 @@ export default function KineticWordmark({ text, lifting = 2, className }: Kineti
       const dt = last ? Math.min(now - last, 40) / 1000 : 0
       last = now
 
-      // Scrubbed by how close the page is to its very end — the wordmark is
-      // the last thing on the page, so it can never scroll far up the screen.
-      // 0 while more than ~half a screen remains below, 1 at the bottom.
+      // How far into the footer we are: 0 as its top meets the bottom of the
+      // screen, 1 at the very end of the page.
       const vh = window.innerHeight
       const remaining = document.documentElement.scrollHeight - (window.scrollY + vh)
-      const p = Math.min(1, Math.max(0, 1 - remaining / (vh * 0.45)))
-      const eased = p * p * (3 - 2 * p)
+      const reach = clamp(1 - remaining / Math.max(1, footer.offsetHeight), 0, 1)
 
-      springs.forEach((s, k) => {
-        // k = 0 is the last letter
-        const pose = POSES[k] ?? POSES[POSES.length - 1]
-        const ty = -pose.rise * eased
-        const tr = pose.tilt * eased
-        // Under-damped on purpose: the letters overshoot and wobble a little.
+      // Smoothed scroll speed, in px/s.
+      const y = window.scrollY
+      if (dt) velocity += ((y - lastScroll) / dt - velocity) * 0.18
+      lastScroll = y
+
+      const active = reach > 0 ? 1 : 0 // before the footer: perfectly still
+      const breakOff = smooth(0.55, 1, reach)
+      line.toggleAttribute('data-broken', breakOff > 0.5)
+
+      for (let i = 0; i < n; i++) {
+        const s = springs[i]
+        // Drift: letters lag against the scroll, more toward the end of the word.
+        const drift = -clamp(velocity / 1400, -1, 1) * 0.14 * (0.35 + 0.65 * (i / (n - 1))) * active
+        let ty = drift
+        let tr = clamp(velocity / 1400, -1, 1) * 2 * (i / (n - 1)) * active
+
+        const k = n - 1 - i // 0 = last letter
+        if (k < lifting) {
+          const pose = POSES[k] ?? POSES[POSES.length - 1]
+          ty += -pose.rise * breakOff
+          tr += pose.tilt * breakOff
+        }
+
+        // Under-damped on purpose: letters overshoot and wobble a little.
         s.vy += ((ty - s.y) * 140 - s.vy * 9) * dt
         s.vr += ((tr - s.r) * 140 - s.vr * 9) * dt
         s.y += s.vy * dt
         s.r += s.vr * dt
-        const el = letterRefs.current[chars.length - 1 - k]
-        if (el) el.style.transform = `translateY(${s.y}em) rotate(${s.r}deg)`
-      })
+        const el = letterRefs.current[i]
+        if (el) el.style.transform = `translateY(${s.y.toFixed(4)}em) rotate(${s.r.toFixed(3)}deg)`
+      }
     }
 
     const io = new IntersectionObserver(
@@ -93,6 +128,8 @@ export default function KineticWordmark({ text, lifting = 2, className }: Kineti
         if (entry.isIntersecting && !running) {
           running = true
           last = 0
+          lastScroll = window.scrollY
+          velocity = 0
           frame = requestAnimationFrame(tick)
         } else if (!entry.isIntersecting && running) {
           running = false
@@ -113,7 +150,7 @@ export default function KineticWordmark({ text, lifting = 2, className }: Kineti
       <p
         ref={textRef}
         // inline-block, so its width is the text's, which is what fit() measures
-        className="inline-block whitespace-nowrap font-display text-[14vw] font-bold leading-[0.82] tracking-[-0.045em]"
+        className="kinetic-word inline-block whitespace-nowrap font-display text-[14vw] font-bold leading-[0.82] tracking-[-0.045em]"
       >
         {chars.map((ch, i) => (
           <span
@@ -122,9 +159,9 @@ export default function KineticWordmark({ text, lifting = 2, className }: Kineti
               letterRefs.current[i] = el
             }}
             className={cn(
-              'inline-block',
-              // Rotate around the bottom-left corner, as if pried up off the baseline.
-              i >= firstLifting && 'origin-bottom-left text-lilac will-change-transform'
+              'inline-block will-change-transform',
+              // The breaking letters pivot on their bottom-left corner, as if pried up.
+              i >= firstLifting ? 'kinetic-break origin-bottom-left' : 'origin-bottom'
             )}
           >
             {ch === ' ' ? ' ' : ch}

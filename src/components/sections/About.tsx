@@ -4,6 +4,7 @@ import ParticleHalo from '../fx/ParticleHalo'
 import Section from '../ui/Section'
 import Reveal from '../ui/Reveal'
 import Meter from '../ui/Meter'
+import ScrubText from '../ui/ScrubText'
 import Tag from '../ui/Tag'
 import { aboutCopy, facts, profile, softSkills, spokenLanguages } from '../../data/profile'
 
@@ -48,9 +49,7 @@ export default function About() {
               </div>
             </div>
             {aboutCopy.map((p) => (
-              <p key={p.slice(0, 24)} className="text-[15px] leading-relaxed text-muted">
-                {p}
-              </p>
+              <ScrubText key={p.slice(0, 24)} text={p} className="text-[16px] leading-relaxed sm:text-[17px]" />
             ))}
           </div>
         </Reveal>
