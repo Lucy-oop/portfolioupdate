@@ -17,6 +17,7 @@ import nayEngineering from '../assets/work/nay-engineering.webp'
 import youthStrength from '../assets/work/youth-strength.webp'
 import jenaShipping from '../assets/work/jena-shipping.webp'
 import nineStar from '../assets/work/ninestar.webp'
+import felixiaHub from '../assets/work/felixia-hub.webp'
 
 export type Category = 'fullstack' | 'frontend' | 'design'
 
@@ -67,6 +68,18 @@ export const projects: Project[] = [
     href: 'https://lucy-oop.github.io/Jena-Shipping/',
     img: jenaShipping,
     featured: true,
+  },
+  {
+    slug: 'felixia-hub',
+    categories: ['fullstack'],
+    title: 'Felixia Hub',
+    year: '2026',
+    role: 'Full-stack build',
+    blurb:
+      'A content, approval and recruitment workspace for Felixia Recruitment — job orders, a six-stage content pipeline with sign-offs, a month/week/list calendar, ideas, an activity log and team roles, with every permission enforced by row-level security in Supabase. In Burmese, English and Japanese.',
+    stack: ['Next.js', 'TypeScript', 'Supabase', 'PostgreSQL RLS'],
+    href: 'https://felixia-hub.vercel.app/',
+    img: felixiaHub,
   },
   {
     slug: 'lifeos',
