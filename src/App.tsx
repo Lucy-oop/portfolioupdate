@@ -1,6 +1,5 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { AnimatePresence } from 'framer-motion'
 
 import Nav from './components/layout/Nav'
 import Footer from './components/layout/Footer'
@@ -9,8 +8,9 @@ import PageTransition from './components/layout/PageTransition'
 import CursorLabel from './components/fx/CursorLabel'
 
 import Home from './routes/Home'
-import CaseStudyPage from './routes/CaseStudyPage'
-import NotFound from './routes/NotFound'
+// Only the home page ships in the main bundle; the rest load when visited.
+const CaseStudyPage = lazy(() => import('./routes/CaseStudyPage'))
+const NotFound = lazy(() => import('./routes/NotFound'))
 
 /** Route changes should land at the top — except in-page hash links. */
 function ScrollToTop() {
@@ -39,15 +39,15 @@ export default function App() {
       <Nav />
 
       <main id="main">
-        <AnimatePresence mode="wait">
-          <PageTransition key={location.pathname}>
+        <PageTransition key={location.pathname}>
+          <Suspense fallback={<div className="min-h-svh" />}>
             <Routes location={location}>
               <Route path="/" element={<Home />} />
               <Route path="/design/:slug" element={<CaseStudyPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </PageTransition>
-        </AnimatePresence>
+          </Suspense>
+        </PageTransition>
       </main>
 
       <Footer />

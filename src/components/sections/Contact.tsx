@@ -70,7 +70,7 @@ export default function Contact() {
       index="05"
       eyebrow="Contact"
       title="Let’s build something."
-      lede="I’m looking for a junior fullstack role, and open to freelance in the meantime. If you have something in mind, tell me about it."
+      lede="I’m looking for a product engineering role, and open to freelance in the meantime. If you have something in mind, tell me about it."
     >
       <div className="grid grid-cols-1 gap-3.5 sm:gap-4 lg:grid-cols-5">
         {/* ---- direct details ---- */}
@@ -184,12 +184,13 @@ export default function Contact() {
 
             <button
               ref={sendRef}
+              data-magnetic
               type="submit"
               disabled={status === 'sending'}
-              className="inline-flex items-center justify-center gap-1.5 self-end rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-canvas transition-opacity hover:opacity-88 disabled:opacity-55"
+              className="btn-lift inline-flex items-center justify-center gap-1.5 self-end rounded-full bg-ink px-7 py-3.5 text-sm font-semibold text-canvas disabled:opacity-55"
             >
               {status === 'sending' ? 'Sending…' : 'Send message'}
-              {status !== 'sending' && <ArrowUpRight size={15} aria-hidden />}
+              {status !== 'sending' && <ArrowUpRight size={15} aria-hidden className="nudge-up-right" />}
             </button>
 
             <div aria-live="polite" className="min-h-5">

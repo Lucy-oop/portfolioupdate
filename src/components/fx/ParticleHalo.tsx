@@ -46,8 +46,10 @@ export default function ParticleHalo({ className, anchorRef, interactive = true,
     const ctx = canvas?.getContext('2d')
     if (!canvas || !ctx) return
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2)
-    const followPointer = interactive && window.matchMedia('(pointer: fine)').matches
+    const fine = window.matchMedia('(pointer: fine)').matches
+    // Touch screens: nothing to follow, so draw fewer dashes at a lower resolution.
+    const dpr = Math.min(window.devicePixelRatio || 1, fine ? 2 : 1.5)
+    const followPointer = interactive && fine
     let w = 0
     let h = 0
     let dashes: Dash[] = []
@@ -65,7 +67,7 @@ export default function ParticleHalo({ className, anchorRef, interactive = true,
       canvas.width = Math.round(w * dpr)
       canvas.height = Math.round(h * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      const gap = w < 640 ? 22 : 24
+      const gap = fine ? 24 : 30
       dashes = []
       for (let y = gap / 2; y < h; y += gap) {
         for (let x = gap / 2; x < w; x += gap) {

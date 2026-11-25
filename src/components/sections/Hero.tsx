@@ -40,7 +40,7 @@ export default function Hero() {
     <section
       ref={sectionRef}
       aria-labelledby="hero-title"
-      className="relative isolate flex min-h-svh flex-col justify-end overflow-hidden px-5 pb-8 pt-28 sm:px-8"
+      className="relative isolate flex min-h-svh flex-col justify-center overflow-hidden px-5 pb-8 pt-28 sm:px-8"
     >
       <ParticleHalo anchorRef={pillRef} size={0.18} className="absolute inset-0 -z-10" />
 
@@ -95,28 +95,29 @@ export default function Hero() {
           </h1>
 
           {/* ---- intro + actions ---- */}
-          <IntroReveal delay={0.3} className="mt-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <IntroReveal delay={0.3} className="mt-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <p className="max-w-md text-[15px] leading-relaxed text-muted sm:text-[17px]">{profile.intro}</p>
             <div className="flex flex-wrap items-center gap-2.5">
               <a
                 ref={viewWork}
                 href="#work"
-                className="inline-flex items-center gap-1.5 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-canvas transition-opacity hover:opacity-88"
+                data-magnetic
+                className="btn-lift inline-flex items-center gap-1.5 rounded-full bg-ink px-5 py-3 text-sm font-semibold text-canvas"
               >
-                View work <ArrowDown size={15} aria-hidden />
+                View work <ArrowDown size={15} aria-hidden className="nudge-down" />
               </a>
               <a
                 href={profile.cv}
                 download
-                className="inline-flex items-center gap-1.5 rounded-full border border-line bg-card px-5 py-3 text-sm font-semibold transition-colors hover:border-lilac"
+                className="btn-lift inline-flex items-center gap-1.5 rounded-full border border-line bg-card px-5 py-3 text-sm font-semibold hover:border-lilac"
               >
-                Download CV <Download size={15} aria-hidden />
+                Download CV <Download size={15} aria-hidden className="nudge-down" />
               </a>
               <a
                 href={`mailto:${profile.email}`}
-                className="inline-flex items-center gap-0.5 px-2 py-3 text-sm font-medium text-muted transition-colors hover:text-ink"
+                className="btn-lift inline-flex items-center gap-0.5 rounded-full px-2 py-3 text-sm font-medium text-muted hover:text-ink hover:shadow-none"
               >
-                {profile.email} <ArrowUpRight size={14} aria-hidden />
+                {profile.email} <ArrowUpRight size={14} aria-hidden className="nudge-up-right" />
               </a>
             </div>
           </IntroReveal>

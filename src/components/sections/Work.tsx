@@ -64,7 +64,7 @@ export default function Work() {
                 aria-pressed={filter === f.id}
                 onClick={() => setFilter(f.id)}
                 className={cn(
-                  'shrink-0 rounded-full border px-3.5 py-2 text-[13px] font-medium transition-colors',
+                  'shrink-0 rounded-full border px-3.5 py-2 text-[13px] font-medium transition-[color,background-color,transform] duration-200 hover:-translate-y-px',
                   filter === f.id
                     ? 'border-transparent bg-ink text-canvas'
                     : 'border-line bg-card text-muted hover:text-ink'

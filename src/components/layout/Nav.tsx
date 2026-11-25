@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { motion } from 'framer-motion'
 import { ArrowUpRight, Menu, X } from 'lucide-react'
 import avatar from '../../assets/avatar.webp'
 import ThemeToggle from './ThemeToggle'
@@ -33,6 +32,8 @@ export default function Nav() {
   const shown = useIntroReveal() // slides down as the intro hands over (or on load)
   const talk = useMagnetic<HTMLAnchorElement>(0.3)
   const lastY = useRef(0)
+  const navRef = useRef<HTMLElement>(null)
+  const pillRef = useRef<HTMLSpanElement>(null)
 
   // Hide on the way down, show on the way up; always shown near the top.
   useEffect(() => {
@@ -67,6 +68,26 @@ export default function Nav() {
     sections.forEach((el) => io.observe(el))
     return () => io.disconnect()
   }, [onHome])
+
+  // The active-section pill: one element that glides to the active link.
+  useEffect(() => {
+    const nav = navRef.current
+    const pill = pillRef.current
+    if (!nav || !pill) return
+    const place = () => {
+      const link = active ? nav.querySelector<HTMLElement>(`a[href$="${active}"]`) : null
+      if (!link) {
+        pill.style.opacity = '0'
+        return
+      }
+      pill.style.opacity = '1'
+      pill.style.width = `${link.offsetWidth}px`
+      pill.style.transform = `translateX(${link.offsetLeft}px)`
+    }
+    place()
+    window.addEventListener('resize', place)
+    return () => window.removeEventListener('resize', place)
+  }, [active])
 
   // Close the menu on navigation, lock the page while it is open, Escape closes.
   useEffect(() => setOpen(false), [pathname])
@@ -111,25 +132,22 @@ export default function Nav() {
           <span className="sr-only">, {profile.fullName}, home</span>
         </Link>
 
-        <nav aria-label="Primary" className="hidden items-center md:flex">
+        <nav ref={navRef} aria-label="Primary" className="relative isolate hidden items-center md:flex">
+          <span
+            ref={pillRef}
+            aria-hidden
+            className="nav-pill absolute left-0 top-0 -z-10 h-full rounded-full bg-canvas-sunk opacity-0"
+          />
           {links.map((l) => (
             <a
               key={l.href}
               href={hrefFor(l.href)}
               aria-current={active === l.href ? 'location' : undefined}
               className={cn(
-                'relative isolate rounded-full px-3.5 py-2 text-sm font-medium transition-colors hover:text-ink',
+                'rounded-full px-3.5 py-2 text-sm font-medium transition-colors hover:text-ink',
                 active === l.href ? 'text-ink' : 'text-muted'
               )}
             >
-              {active === l.href && (
-                <motion.span
-                  layoutId="nav-active"
-                  aria-hidden
-                  className="absolute inset-0 -z-10 rounded-full bg-canvas-sunk"
-                  transition={{ type: 'spring', stiffness: 400, damping: 34 }}
-                />
-              )}
               {l.label}
             </a>
           ))}
@@ -150,9 +168,10 @@ export default function Nav() {
           <a
             ref={talk}
             href={hrefFor('#contact')}
-            className="hidden items-center gap-1 rounded-full bg-ink px-4.5 py-2.5 text-sm font-semibold text-canvas sm:inline-flex"
+            data-magnetic
+            className="btn-lift hidden items-center gap-1 rounded-full bg-ink px-4.5 py-2.5 text-sm font-semibold text-canvas sm:inline-flex"
           >
-            Let’s talk <ArrowUpRight size={14} aria-hidden />
+            Let’s talk <ArrowUpRight size={14} aria-hidden className="nudge-up-right" />
           </a>
           <button
             type="button"

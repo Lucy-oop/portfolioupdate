@@ -113,9 +113,10 @@ export default function Stack() {
 
       {/* ---- learning next ---- */}
       <Reveal className="mt-10">
-        <div className="gradient-wash flex flex-col gap-4 rounded-bento p-6 text-white shadow-bento sm:flex-row sm:items-center sm:gap-6">
+        {/* The wash is pale in both themes, so its text is always the dark ink. */}
+        <div className="gradient-wash flex flex-col gap-4 rounded-bento p-6 text-[#1f1b24] shadow-bento sm:flex-row sm:items-center sm:gap-6">
           <div className="flex shrink-0 items-center gap-3">
-            <span className="grid size-9 place-items-center rounded-xl bg-white/20">
+            <span className="grid size-9 place-items-center rounded-xl bg-white/50">
               <Sparkles size={17} aria-hidden />
             </span>
             <h3 className="text-[15px] font-semibold">Learning next</h3>
@@ -123,7 +124,7 @@ export default function Stack() {
           <ul className="flex flex-wrap gap-1.5">
             {learningNext.map((item) => (
               <li key={item}>
-                <span className="inline-flex items-center rounded-full bg-white/20 px-2.5 py-1 font-mono text-[10.5px] leading-none tracking-wide">
+                <span className="inline-flex items-center rounded-full bg-white/55 px-2.5 py-1 font-mono text-[10.5px] leading-none tracking-wide">
                   {item}
                 </span>
               </li>

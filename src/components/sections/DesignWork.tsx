@@ -92,6 +92,24 @@ function CaseIndex() {
   // Motion state lives in refs: the loop writes styles directly.
   const target = useRef({ x: 0, y: 0 })
   const anchored = useRef(false)
+  const listRef = useRef<HTMLOListElement>(null)
+  const lastPointer = useRef<{ x: number; y: number } | null>(null)
+
+  // Scrolling with a still mouse fires no pointer events, so re-check which
+  // row is under the cursor ourselves — or let the preview go if none is.
+  useEffect(() => {
+    if (active === null || anchored.current) return
+    const onScroll = () => {
+      const p = lastPointer.current
+      const list = listRef.current
+      if (!p || !list) return
+      const row = document.elementFromPoint(p.x, p.y)?.closest('.index-row')
+      const i = row ? Array.prototype.indexOf.call(list.children, row) : -1
+      setActive(i >= 0 ? i : null)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [active])
 
   useEffect(() => {
     const mql = window.matchMedia('(hover: hover) and (pointer: fine)')
@@ -137,6 +155,7 @@ function CaseIndex() {
   const onPointer = (e: React.PointerEvent) => {
     if (e.pointerType !== 'mouse') return
     anchored.current = false
+    lastPointer.current = { x: e.clientX, y: e.clientY }
     // Sit up and to the right of the cursor, so the row text stays readable.
     target.current = { x: e.clientX + 220, y: e.clientY - 40 }
   }
@@ -152,7 +171,7 @@ function CaseIndex() {
 
   return (
     <div onPointerMove={onPointer} onPointerLeave={() => setActive(null)}>
-      <ol className="index-list">
+      <ol ref={listRef} className="index-list">
         {caseStudies.map((cs, i) => (
           <IndexRow
             key={cs.slug}
