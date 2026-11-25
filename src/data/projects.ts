@@ -10,6 +10,13 @@ import myflix from '../assets/work/myflix.webp'
 import goldenGoat from '../assets/work/goldengoat.webp'
 import lifeos from '../assets/work/lifeos.webp'
 import wanmai from '../assets/work/wanmai.webp'
+import cavernResort from '../assets/work/cavern-resort.webp'
+import csNorth from '../assets/work/cs-north.webp'
+import myanmarForb from '../assets/work/myanmar-forb.webp'
+import nayEngineering from '../assets/work/nay-engineering.webp'
+import youthStrength from '../assets/work/youth-strength.webp'
+import jenaShipping from '../assets/work/jena-shipping.webp'
+import nineStar from '../assets/work/ninestar.webp'
 
 export type Category = 'fullstack' | 'frontend' | 'design'
 
@@ -73,6 +80,90 @@ export const projects: Project[] = [
     href: 'https://mingalar-express.vercel.app',
     img: mingalar,
     featured: true,
+  },
+  {
+    slug: 'jena-shipping',
+    categories: ['fullstack', 'design'],
+    title: 'Jena Shipping',
+    year: '2026',
+    role: 'Full-stack build',
+    blurb:
+      'A crewing and maritime-training site for a Yangon agency that places Myanmar seafarers with international shipowners — a multi-step crew application validated with zod, server actions writing to Supabase with a private document bucket, and GSAP/Lenis motion throughout.',
+    stack: ['Next.js 15', 'Tailwind v4', 'Supabase', 'GSAP'],
+    href: 'https://lucy-oop.github.io/Jena-Shipping/',
+    img: jenaShipping,
+  },
+  {
+    slug: 'cavern-resort',
+    categories: ['design', 'frontend'],
+    title: 'Cavern Island Resort',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'A resort site for 25 rooms between jungle and sea on Hlaing Gu Island in the Mergui Archipelago — a full-screen photo slider, rooms, sea-cave experiences, dining and getting-here guides, in English, Burmese, Thai and Chinese.',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    href: 'https://lucy-oop.github.io/Cavern-Resort/',
+    img: cavernResort,
+  },
+  {
+    slug: 'myanmar-forb-network',
+    categories: ['design', 'frontend'],
+    title: 'Myanmar FoRB Network',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'A five-page site for a network defending freedom of religion or belief in Myanmar — violation figures that count up from one data file, an inline SVG map, filterable insights, a six-colour page-transition curtain and scroll reveals that all switch off for reduced motion.',
+    stack: ['HTML', 'CSS', 'JavaScript', 'Python'],
+    href: 'https://lucy-oop.github.io/Myanmar-ForB-Network/',
+    img: myanmarForb,
+  },
+  {
+    slug: 'nine-star',
+    categories: ['design', 'frontend'],
+    title: 'Nine Star',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'An online shop bringing Myanmar pantry staples to Japan — ten categories, product pages and a browser-stored cart that sends a pre-filled order enquiry by email, with all products and prices editable from one data file.',
+    stack: ['HTML', 'CSS', 'JavaScript', 'Python'],
+    href: 'https://lucy-oop.github.io/NineStar/',
+    img: nineStar,
+  },
+  {
+    slug: 'nay-engineering',
+    categories: ['design', 'frontend'],
+    title: 'Nay Engineering',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'A site for a Singapore steel-structure, piping and construction firm — five services, filterable projects with a photo gallery, and a shared header, footer and carousel all built from one data file.',
+    stack: ['HTML', 'CSS', 'JavaScript'],
+    href: 'https://lucy-oop.github.io/Nay-Engineering/',
+    img: nayEngineering,
+  },
+  {
+    slug: 'cs-north-engineering',
+    categories: ['design', 'frontend'],
+    title: 'CS North Engineering',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'A site for a Singapore building-management-system specialist — BMS, SCADA and PLC services, a projects showcase, and quote and WhatsApp contact paths.',
+    stack: ['HTML', 'CSS', 'JavaScript', 'Python'],
+    href: 'https://lucy-oop.github.io/CS-North-Engineering/',
+    img: csNorth,
+  },
+  {
+    slug: 'youth-strength-association',
+    categories: ['design', 'frontend'],
+    title: 'Youth Strength Association',
+    year: '2026',
+    role: 'UI/UX design + frontend build',
+    blurb:
+      'A bilingual site for a community organisation empowering youth and women in Kyauk Phyu, Rakhine State, since 2014 — education, livelihood and emergency-relief programmes in an autoplaying story slider, with clear ways to support.',
+    stack: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
+    href: 'https://lucy-oop.github.io/Youthstrengthassociation/',
+    img: youthStrength,
   },
   {
     slug: 'htwe-oo-myanmar',
