@@ -11,8 +11,18 @@ import goldenGoat from '../assets/work/goldengoat.webp'
 import lifeos from '../assets/work/lifeos.webp'
 import wanmai from '../assets/work/wanmai.webp'
 
+export type Category = 'fullstack' | 'frontend' | 'design'
+
+export const categoryLabels: Record<Category, string> = {
+  fullstack: 'Full-stack',
+  frontend: 'Frontend',
+  design: 'UI/UX',
+}
+
 export type Project = {
   slug: string
+  /** Drives the Work filters. A project can sit under more than one. */
+  categories: Category[]
   title: string
   year: string
   role: string
@@ -27,6 +37,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: 'golden-goat-myanmar',
+    categories: ['fullstack'],
     title: 'Golden G.O.A.T Myanmar',
     year: '2026',
     role: 'Full-stack build',
@@ -39,6 +50,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'lifeos',
+    categories: ['fullstack'],
     title: 'LifeOS',
     year: '2026',
     role: 'Solo build — design, frontend + backend',
@@ -51,6 +63,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'mingalar-express',
+    categories: ['fullstack'],
     title: 'Mingalar Express',
     year: '2026',
     role: 'Full-stack + geospatial dispatch',
@@ -63,6 +76,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'htwe-oo-myanmar',
+    categories: ['design', 'frontend'],
     title: 'Htwe Oo Myanmar',
     year: '2026',
     role: 'UI/UX design + frontend build',
@@ -74,6 +88,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'quickbook',
+    categories: ['fullstack'],
     title: 'Quickbook',
     year: '2026',
     role: 'Full-stack + database design',
@@ -85,6 +100,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'wan-mai',
+    categories: ['design', 'frontend'],
     title: 'WanMai',
     year: '2026',
     role: 'UI/UX design, frontend, network testing + debugging',
@@ -96,6 +112,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'log-vault',
+    categories: ['fullstack'],
     title: 'Log Vault',
     year: '2026',
     role: 'Full-stack build',
@@ -107,6 +124,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'portfolio-ai-assistant',
+    categories: ['frontend'],
     title: 'Portfolio AI Assistant',
     year: '2026',
     role: 'Frontend + API integration',
@@ -118,6 +136,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'nexus-saas',
+    categories: ['design', 'frontend'],
     title: 'Nexus SaaS',
     year: '2025',
     role: 'UI design + build',
@@ -129,6 +148,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'trinkora',
+    categories: ['frontend'],
     title: 'TrinKora Clothing',
     year: '2025',
     role: 'Frontend',
@@ -139,6 +159,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'ecommerce-ts',
+    categories: ['frontend'],
     title: 'Ecommerce (TypeScript)',
     year: '2025',
     role: 'Frontend',
@@ -149,6 +170,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'myflix',
+    categories: ['frontend'],
     title: 'MyFlix',
     year: '2024',
     role: 'Frontend',
@@ -161,3 +183,9 @@ export const projects: Project[] = [
 
 export const featuredProjects = projects.filter((p) => p.featured)
 export const otherProjects = projects.filter((p) => !p.featured)
+
+/**
+ * Featured first: the order the Work row shows, and the order the intro
+ * preloader's card ring uses, so the ring unfurls into the same row.
+ */
+export const orderedProjects = [...featuredProjects, ...otherProjects]

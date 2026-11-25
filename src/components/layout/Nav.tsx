@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react'
 import avatar from '../../assets/avatar.webp'
 import ThemeToggle from './ThemeToggle'
 import { cn } from '../../lib/cn'
+import { useIntroReveal } from '../../lib/intro'
 
 const links = [
   { label: 'Work', href: '#work' },
@@ -18,6 +19,8 @@ export default function Nav() {
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
   const onHome = pathname === '/'
+  // Slides down into place as the first-visit intro hands over (or on load).
+  const shown = useIntroReveal()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12)
@@ -41,9 +44,10 @@ export default function Nav() {
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-50 transition-all duration-300',
+        'fixed inset-x-0 top-0 z-50 transition-all duration-700 ease-out-soft',
         scrolled && 'backdrop-blur-md'
       )}
+      style={{ transform: shown ? 'none' : 'translateY(-110%)' }}
     >
       <div
         className={cn(

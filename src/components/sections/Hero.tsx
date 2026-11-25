@@ -1,6 +1,7 @@
 import { ArrowDown, ArrowUpRight, Download, MapPin } from 'lucide-react'
 import portrait from '../../assets/portrait.webp'
-import Reveal from '../ui/Reveal'
+import IntroReveal from '../ui/IntroReveal'
+import HeroStrip from './HeroStrip'
 import { profile } from '../../data/profile'
 
 export default function Hero() {
@@ -12,7 +13,7 @@ export default function Hero() {
       */}
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-3.5 min-[420px]:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         {/* ---- intro: the anchor tile ---- */}
-        <Reveal className="min-[420px]:col-span-2 lg:col-span-3" y={22}>
+        <IntroReveal at="opening" className="min-[420px]:col-span-2 lg:col-span-3">
           <div className="tile flex h-full flex-col justify-between gap-8 p-7 sm:p-10">
             <div>
               <span className="eyebrow">{profile.role}</span>
@@ -20,25 +21,27 @@ export default function Hero() {
                 id="hero-title"
                 className="mt-4 text-balance text-4xl font-semibold leading-[1.03] sm:text-5xl md:text-6xl"
               >
-                I design it{' '}
-                <span className="relative whitespace-nowrap">
-                  before
-                  <svg
-                    aria-hidden
-                    viewBox="0 0 200 12"
-                    preserveAspectRatio="none"
-                    className="absolute -bottom-1 left-0 h-2.5 w-full text-lilac"
-                  >
-                    <path
-                      d="M2 8c40-5 90-6 196-3"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </span>{' '}
-                I build it.
+                <IntroReveal mode="mask" delay={0.1}>
+                  I design it{' '}
+                  <span className="relative whitespace-nowrap">
+                    before
+                    <svg
+                      aria-hidden
+                      viewBox="0 0 200 12"
+                      preserveAspectRatio="none"
+                      className="absolute -bottom-1 left-0 h-2.5 w-full text-lilac"
+                    >
+                      <path
+                        d="M2 8c40-5 90-6 196-3"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </span>{' '}
+                  I build it.
+                </IntroReveal>
               </h1>
               <p className="mt-6 max-w-lg text-[15px] leading-relaxed text-muted sm:text-base">
                 {profile.intro}
@@ -67,10 +70,10 @@ export default function Hero() {
               </a>
             </div>
           </div>
-        </Reveal>
+        </IntroReveal>
 
         {/* ---- portrait ---- */}
-        <Reveal className="min-[420px]:col-span-1" delay={0.08} y={22}>
+        <IntroReveal at="opening" className="min-[420px]:col-span-1" delay={0.08}>
           <div className="gradient-wash relative flex h-full min-h-56 flex-col justify-end overflow-hidden rounded-bento shadow-bento">
             <img
               src={portrait}
@@ -89,10 +92,10 @@ export default function Hero() {
               <p className="mt-0.5 text-[13px] font-semibold leading-snug">{profile.fullName}</p>
             </div>
           </div>
-        </Reveal>
+        </IntroReveal>
 
         {/* ---- availability ---- */}
-        <Reveal className="min-[420px]:col-span-1" delay={0.14} y={22}>
+        <IntroReveal at="opening" className="min-[420px]:col-span-1" delay={0.14}>
           <div className="tile flex h-full flex-col justify-between gap-4 p-6">
             <span className="relative flex size-2.5">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-mint opacity-70" />
@@ -100,10 +103,10 @@ export default function Hero() {
             </span>
             <p className="text-[15px] font-semibold leading-snug">{profile.availability}</p>
           </div>
-        </Reveal>
+        </IntroReveal>
 
         {/* ---- location ---- */}
-        <Reveal className="min-[420px]:col-span-1" delay={0.18} y={22}>
+        <IntroReveal at="opening" className="min-[420px]:col-span-1" delay={0.18}>
           <div className="tile flex h-full flex-col justify-between gap-4 p-6">
             <MapPin size={18} className="text-lilac" aria-hidden />
             <div>
@@ -113,10 +116,10 @@ export default function Hero() {
               </p>
             </div>
           </div>
-        </Reveal>
+        </IntroReveal>
 
         {/* ---- counts ---- */}
-        <Reveal className="min-[420px]:col-span-2" delay={0.22} y={22}>
+        <IntroReveal at="opening" className="min-[420px]:col-span-2" delay={0.22}>
           {/*
             Totals across all her work, not a count of what this page lists —
             the site shows a selection. Kept as literals for that reason.
@@ -128,7 +131,11 @@ export default function Hero() {
             <span aria-hidden className="h-9 w-px bg-line" />
             <Stat value="4" label="Languages" />
           </div>
-        </Reveal>
+        </IntroReveal>
+      </div>
+
+      <div className="mx-auto max-w-6xl">
+        <HeroStrip />
       </div>
     </section>
   )

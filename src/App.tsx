@@ -6,6 +6,7 @@ import Nav from './components/layout/Nav'
 import Footer from './components/layout/Footer'
 import SmoothScroll from './components/layout/SmoothScroll'
 import PageTransition from './components/layout/PageTransition'
+import Preloader from './components/layout/Preloader'
 
 import Home from './routes/Home'
 import CaseStudyPage from './routes/CaseStudyPage'
@@ -26,6 +27,8 @@ export default function App() {
 
   return (
     <SmoothScroll>
+      {/* Rendered straight into #root: it marks its siblings inert while it plays. */}
+      <Preloader />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-ink focus:px-5 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-canvas"
